@@ -9,10 +9,12 @@ import { Strategy } from "passport-local";
 import session from "express-session";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import flash from 'connect-flash';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const App = express();
+App.use(flash());
 const PORT = 3000;
 App.use(express.static(__dirname));
 
@@ -46,9 +48,11 @@ App.post("/signup", async (req, res) => {
       password: req.body.password,
     });
     await newUser.save();
-    res.status(200).send("Form data saved successfully!");
+    req.flash("success", "Form data saved successfully!"); // Flash a success message
+    res.redirect("/signup"); // Redirect to the signup page or another route
   } catch (error) {
-    res.status(500).send("Error saving form data: " + error.message);
+    req.flash("error", "Error saving form data: " + error.message); // Flash the error message
+    res.redirect("/signup"); // Redirect to the signup page or another route
   }
 });
 
@@ -56,21 +60,30 @@ App.post(
   "/login",
   passport.authenticate("local", {
     successRedirect: "/dashboard",
-    failureRedirect: "/error",
+    failureRedirect: "/login",
+    failureFlash: true,
   })
 );
 
 App.get("/login", (req, res) => {
-  res.render("login.ejs");
+  const messages = req.flash("error"); // Retrieve error flash messages
+  res.render("login.ejs", { messages });
 });
 
 App.get("/signup", (req, res) => {
-  res.render("signup.ejs");
+  const successMessage = req.flash("success");
+  const errorMessage = req.flash("error");
+  res.render("signup.ejs", { successMessage, errorMessage });
 });
 
 App.get("/", (req, res) => {
   res.render("home.ejs");
 });
+
+App.get("/home", (req, res) => {
+  res.render("home.ejs");
+});
+
 
 App.get("/dashboard", (req, res) => {
   if (req.isAuthenticated()) {

@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  hostel: String,
-  mess: String,
-  password: String,
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  hostel: { type: String, required: true },
+  mess: { type: String, required: true },
+  password: { type: String, required: true },
 });
 
 userSchema.statics.login = async function (email, password) {
