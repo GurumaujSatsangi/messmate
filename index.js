@@ -2,6 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import User from "./models/userModel.js";
+import LHMenu from "./models/lhmenuModel.js";
+import MHMenu from "./models/mhmenuModel.js";
 import passport from "passport";
 import { Strategy } from "passport-local";
 import session from "express-session";
@@ -64,11 +66,15 @@ App.get("/login", (req, res) => {
 
 App.get("/dashboard", (req, res) => {
   if (req.isAuthenticated()) {
-    res.render("dashboard.ejs");
+      // Fetch only the logged-in user's data
+      const loggedInUser = req.user; // Passport stores the authenticated user's data in req.user
+      res.render("dashboard.ejs", { user: loggedInUser }); // Pass the logged-in user's data to the EJS template
   } else {
-    res.redirect("error");
+      res.redirect("/error");
   }
 });
+
+
 
 passport.use(
   new Strategy(
