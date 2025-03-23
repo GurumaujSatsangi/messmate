@@ -61,20 +61,25 @@ App.post(
 );
 
 App.get("/login", (req, res) => {
-  res.render("index");
+  res.render("login.ejs");
+});
+
+App.get("/signup", (req, res) => {
+  res.render("signup.ejs");
+});
+
+App.get("/", (req, res) => {
+  res.render("home.ejs");
 });
 
 App.get("/dashboard", (req, res) => {
   if (req.isAuthenticated()) {
-      // Fetch only the logged-in user's data
-      const loggedInUser = req.user; // Passport stores the authenticated user's data in req.user
-      res.render("dashboard.ejs", { user: loggedInUser }); // Pass the logged-in user's data to the EJS template
+    const loggedInUser = req.user; // Passport stores the authenticated user's data in req.user
+    res.render("dashboard.ejs", { user: loggedInUser }); // Pass the logged-in user's data to the EJS template
   } else {
-      res.redirect("/error");
+    res.redirect("/login");
   }
 });
-
-
 
 passport.use(
   new Strategy(

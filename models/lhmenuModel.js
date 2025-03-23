@@ -5,6 +5,7 @@ const lhmenuSchema = new mongoose.Schema({
     date: Date,
     breakfast: String,
     lunch: String,
+    snack: String,
     dinner: String
 
 });
