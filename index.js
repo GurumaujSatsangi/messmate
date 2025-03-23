@@ -2,8 +2,15 @@ import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import User from "./models/userModel.js";
-import LHMenu from "./models/lhmenuModel.js";
-import MHMenu from "./models/mhmenuModel.js";
+import LHMenuVeg from "./models/lhmenuvegModel.js";
+import LHMenuNonVeg from "./models/lhmenunonvegModel.js";
+import LHMenuSpecial from "./models/lhmenuspecialModel.js";
+
+import MHMenuVeg from "./models/mhmenuvegModel.js";
+import MHMenuNonVeg from "./models/mhmenunonvegModel.js";
+
+import MHMenuSpecial from "./models/mhmenuspecialModel.js";
+
 import passport from "passport";
 import { Strategy } from "passport-local";
 import session from "express-session";
@@ -85,12 +92,40 @@ App.get("/home", (req, res) => {
 });
 
 
-App.get("/dashboard", (req, res) => {
+
+
+App.get("/dashboard", async (req, res) => {
   if (req.isAuthenticated()) {
-    const loggedInUser = req.user; // Passport stores the authenticated user's data in req.user
-    res.render("dashboard.ejs", { user: loggedInUser }); // Pass the logged-in user's data to the EJS template
+      const loggedInUser = req.user;
+      let dateParam = req.query.date || new Date().toISOString().split("T")[0];
+      let currentDate = new Date(dateParam);
+      let prevDate = new Date(currentDate);
+      prevDate.setDate(prevDate.getDate() - 1);
+      let nextDate = new Date(currentDate);
+      nextDate.setDate(nextDate.getDate() + 1);
+
+      try {
+        const mealData = await MHMenu.findOne({ date: currentDate.toISOString().split("T")[0] });         
+         const meals = [
+              { name: "Breakfast", details: mealData?.breakfast || "No data available" },
+              { name: "Lunch", details: mealData?.lunch || "No data available" },
+              { name: "Snacks", details: mealData?.snacks || "No data available" },
+              { name: "Dinner", details: mealData?.dinner || "No data available" }
+          ];
+
+          res.render("dashboard", {
+              user: loggedInUser,
+              formattedDate: currentDate.toDateString(),
+              prevDate: prevDate.toISOString().split("T")[0],
+              nextDate: nextDate.toISOString().split("T")[0],
+              meals
+          });
+      } catch (error) {
+          console.error("Error fetching meals:", error);
+          res.status(500).send("Internal Server Error");
+      }
   } else {
-    res.redirect("/login");
+      res.redirect("/login");
   }
 });
 
@@ -122,6 +157,16 @@ passport.deserializeUser(async (id, cb) => {
   } catch (error) {
     cb(error);
   }
+});
+
+App.get("/logout", (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    req.flash("success", "Logged out successfully!");
+    res.redirect("/login");
+  });
 });
 
 App.get("/error", (req, res) => {

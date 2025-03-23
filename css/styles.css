@@ -103,6 +103,12 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+.card {
+  margin-bottom: 20px;
+}
+.pagination {
+  justify-content: center;
+}
 
 hr {
   margin: 1rem 0;
@@ -5516,6 +5522,14 @@ textarea.form-control-lg {
     border: 0;
     border-radius: 0;
   }
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.content {
+    flex: 1;
+}
   .modal-fullscreen-xxl-down .modal-header,
   .modal-fullscreen-xxl-down .modal-footer {
     border-radius: 0;
@@ -5781,6 +5795,10 @@ textarea.form-control-lg {
 .popover-body {
   padding: var(--bs-popover-body-padding-y) var(--bs-popover-body-padding-x);
   color: var(--bs-popover-body-color);
+}
+html, body {
+  height: 100%;
+  margin: 0;
 }
 
 .carousel {

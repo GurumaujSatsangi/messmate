@@ -32,103 +32,143 @@
                 </div>
             </div>
         </nav>
-        <!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-5">
-                <div class="row gx-5 justify-content-center">
-                    <div class="col-lg-6">
-                        <div class="text-center my-5">
-                            
-                            <div class="container px-5 my-5">
+     
+     
+        <div class="container px-5">
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-6">
+                    <div class="text-center my-5">
+                        
+                        <div class="container px-5 my-5">
+                            <div class="container mt-5">
                                 <form id="contactForm" method="POST" action="/signup">
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="name" name="name" type="text" placeholder="Name" data-sb-validations="required" />
+                                        <input class="form-control" id="name" name="name" type="text" placeholder="Name" required />
                                         <label for="name">Name</label>
-                                        <div class="invalid-feedback" data-sb-feedback="name:required">Name is required.</div>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="emailAddress" name="email" type="email" placeholder="Email Address" data-sb-validations="required,email" />
+                                        <input class="form-control" id="emailAddress" name="email" type="email" placeholder="Email Address" required />
                                         <label for="emailAddress">Email Address</label>
-                                        <div class="invalid-feedback" data-sb-feedback="emailAddress:required">Email Address is required.</div>
-                                        <div class="invalid-feedback" data-sb-feedback="emailAddress:email">Email Address Email is not valid.</div>
                                     </div>
+                                    
+                                    <!-- Hostel Type Dropdown -->
                                     <div class="form-floating mb-3">
-                                        <select class="form-select" id="hostel"  name="hostel" aria-label="Block">
-                                            <option value="MH A">MH A</option>
-                                            <option value="MH B">MH B</option>
-                                            <option value="MH B ANNEX">MH B ANNEX</option>
-                                            <option value="MH C">MH C</option>
-                                            <option value="MH D">MH D</option>
-                                            <option value="MH D ANNEX">MH D ANNEX</option>
-                                            <option value="MH E">MH E</option>
-                                            <option value="MH F">MH F</option>
-                                            <option value="MH G">MH G</option>
-                                            <option value="MH H">MH H</option>
-                                            <option value="MH I">MH I</option>
-                                            <option value="MH J">MH J</option>
-                                            <option value="MH J ANNEX">MH J ANNEX</option>
-                                            <option value="MH K">MH K</option>
-                                            <option value="MH L">MH L</option>
-                                            <option value="MH M">MH M</option>
-                                            <option value="MH M ANNEX">MH M ANNEX</option>
-                                            <option value="MH N">MH N</option>
-                                            <option value="MH N ANNEX">MH N ANNEX</option>
-                                            <option value="MH P">MH P</option>
-                                            <option value="MH Q">MH Q</option>
-                                            <option value="MH R">MH R</option>
-                                            <option value="MH S">MH S</option>
-                                            <option value="MH T">MH T</option>
-                                            <option value="LH A">LH A</option>
-                                            <option value="LH B">LH B</option>
-                                            <option value="LH C">LH C</option>
-                                            <option value="LH D">LH D</option>
-                                            <option value="LH E">LH E</option>
-                                            <option value="LH F">LH F</option>
-                                            <option value="LH G">LH G</option>
-                                            <option value="LH H">LH H</option>
-                                            <option value="LH J">LH J</option>
-                                            <option value="RGT H">RGT H</option>
-                                            <option value="LH GH (Annex)">LH GH (Annex)</option>
+                                        <select class="form-select" id="hostelType" name="hostelType" required>
+                                            <option value="">Select Hostel Type</option>
+                                            <option value="mens">Men's Hostel</option>
+                                            <option value="ladies">Ladies Hostel</option>
                                         </select>
-                                        <label for="block">Block</label>
+                                        <label for="hostelType">Hostel Type</label>
                                     </div>
+                        
+                                    <!-- Hostel Dropdown (Conditional) -->
                                     <div class="form-floating mb-3">
-                                        <select class="form-select" id="mess" name="mess" aria-label="Mess">
-                                            <option value="Zenith">Zenith</option>
-                                            <option value="SRCC">SRCC</option>
-                                            <option value="Darling">Darling</option>
+                                        <select class="form-select" id="hostel" name="hostel" required>
+                                            <option value="">Select Hostel</option>
+                                        </select>
+                                        <label for="hostel">Block</label>
+                                    </div>
+                        
+                                    <!-- Mess Type Dropdown -->
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" id="messType" name="messType" required>
+                                            <option value="">Select Mess Type</option>
+                                            <option value="veg">Veg</option>
+                                            <option value="nonveg">Non-Veg</option>
+                                            <option value="special">Special</option>
+                                        </select>
+                                        <label for="messType">Mess Type</label>
+                                    </div>
+                        
+                                    <!-- Mess Dropdown (Conditional) -->
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" id="mess" name="mess" required>
+                                            <option value="">Select Mess</option>
                                         </select>
                                         <label for="mess">Mess</label>
                                     </div>
+                        
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="password" name="password" type="password" placeholder="Password" data-sb-validations="required" />
+                                        <input class="form-control" id="password" name="password" type="password" placeholder="Password" required />
                                         <label for="password">Password</label>
-                                        <div class="invalid-feedback" data-sb-feedback="password:required">Password is required.</div>
                                     </div>
-                                  
-                                        <% if (successMessage.length > 0) { %>
-                                            <div class="alert alert-success">
-                                              <%= successMessage %>
-                                            </div>
-                                          <% } %>
-                                          <% if (errorMessage.length > 0) { %>
-                                            <div class="alert alert-danger">
-                                              <%= errorMessage %>
-                                            </div>
-                                          <% } %>     
+                        
+                                    <% if (successMessage.length > 0) { %>
+                                        <div class="alert alert-success">
+                                            <%= successMessage %>
+                                        </div>
+                                    <% } %>
+                                    <% if (errorMessage.length > 0) { %>
+                                        <div class="alert alert-danger">
+                                            <%= errorMessage %>
+                                        </div>
+                                    <% } %>  
+                        
                                     <div class="d-grid">
                                         <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Signup</button>
                                     </div>
                                 </form>
                             </div>
-                            <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+                        
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    const hostelType = document.getElementById("hostelType");
+                                    const hostel = document.getElementById("hostel");
+                                    const messType = document.getElementById("messType");
+                                    const mess = document.getElementById("mess");
+                        
+                                    const hostels = {
+                                        mens: [
+                                            "MH A", "MH B", "MH B ANNEX", "MH C", "MH D", "MH D ANNEX", "MH E", "MH F",
+                                            "MH G", "MH H", "MH I", "MH J", "MH J ANNEX", "MH K", "MH L", "MH M", "MH M ANNEX",
+                                            "MH N", "MH N ANNEX", "MH P", "MH Q", "MH R", "MH S", "MH T"
+                                        ],
+                                        ladies: [
+                                            "LH A", "LH B", "LH C", "LH D", "LH E", "LH F", "LH G", "LH H", "LH J", "RGT H", "LH GH (Annex)"
+                                        ]
+                                    };
+                        
+                                    const messOptions = {
+                                        veg: ["Zenith Veg", "SRCC Veg", "Darling Veg"],
+                                        nonveg: ["Zenith Non-Veg", "SRCC Non-Veg", "Darling Non-Veg"],
+                                        special: ["Zenith Special", "SRCC Special", "Darling Special"]
+                                    };
+                        
+                                    // Update hostel dropdown based on hostel type selection
+                                    hostelType.addEventListener("change", function () {
+                                        hostel.innerHTML = '<option value="">Select Hostel</option>'; // Reset options
+                        
+                                        if (hostelType.value && hostels[hostelType.value]) {
+                                            hostels[hostelType.value].forEach(hostelName => {
+                                                const option = document.createElement("option");
+                                                option.value = hostelName;
+                                                option.textContent = hostelName;
+                                                hostel.appendChild(option);
+                                            });
+                                        }
+                                    });
+                        
+                                    // Update mess dropdown based on mess type selection
+                                    messType.addEventListener("change", function () {
+                                        mess.innerHTML = '<option value="">Select Mess</option>'; // Reset options
+                        
+                                        if (messType.value && messOptions[messType.value]) {
+                                            messOptions[messType.value].forEach(messName => {
+                                                const option = document.createElement("option");
+                                                option.value = messName;
+                                                option.textContent = messName;
+                                                mess.appendChild(option);
+                                            });
+                                        }
+                                    });
+                                });
+                            </script>
                         </div>
+                        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
                     </div>
                 </div>
             </div>
-        </header>
-     
-      
+        </div>
 
         <!-- Footer-->
         <footer class="py-5 bg-dark">
