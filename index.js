@@ -50,7 +50,9 @@ App.post("/signup", async (req, res) => {
     const newUser = new User({
       name: req.body.name,
       email: req.body.email,
+      hostelType:req.body.hostelType,
       hostel: req.body.hostel,
+      messType:req.body.messType,
       mess: req.body.mess,
       password: req.body.password,
     });
