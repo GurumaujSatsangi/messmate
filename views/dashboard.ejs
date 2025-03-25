@@ -89,16 +89,16 @@
         </table>
       </div>
     </section>
-    <% if (successMessage.length > 0) { %>
-    <div class="alert alert-success"><%= successMessage %></div>
-    <% } %> <% if (errorMessage.length > 0) { %>
-    <div class="alert alert-danger"><%= errorMessage %></div>
-    <% } %>
+   
 
     <div class="container px-5 my-5">
       <h3>Submit a Suggestion</h3>
       <hr />
-
+      <% if (successMessage.length > 0) { %>
+        <div class="alert alert-success"><%= successMessage %></div>
+        <% } %> <% if (errorMessage.length > 0) { %>
+        <div class="alert alert-danger"><%= errorMessage %></div>
+        <% } %>
       <form id="contactForm" method="POST" action="/suggestion">
         <div class="mb-3">
           <label class="form-label d-block">Meal Type</label>
