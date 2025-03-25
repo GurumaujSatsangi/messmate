@@ -1,216 +1,379 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>MessMate</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Bootstrap icons-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
-    </head>
-    <body>
-        <!-- Responsive navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container px-5">
-                <a class="navbar-brand" href="#!">MessMate</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/logout">Logout</a></li>
-                       
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-5">
-                <div class="row gx-5 justify-content-center">
-                    <div class="col-lg-6">
-                        <div class="text-center my-5">
-                            <h1 class="display-5 fw-bolder text-white mb-2">Welcome, <%= user.name %>!</h1>
-                           
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!-- Features section-->
-        <section class="py-5 border-bottom" id="features">
-            <div class="container px-5 my-1">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Hostel Type</th>
-                            <th>Block</th>
-                            <th>Mess Type</th>
-                            <th>Mess</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td name="hosteltype"><%= user.hostelType %></td>
-                            <td name="hostel"><%= user.hostel %></td>
-                            <td name="messtype"><%= user.messType %></td>
-                            <td name="mess"><%= user.mess %></td>
-
-                        </tr>
-                    </tbody>
-                </table>
-          
-            </div>
-        </section>
-        <% if (successMessage.length > 0) { %>
-            <div class="alert alert-success">
-              <%= successMessage %>
-            </div>
-          <% } %>
-          
-          <% if (errorMessage.length > 0) { %>
-            <div class="alert alert-danger">
-              <%= errorMessage %>
-            </div>
-          <% } %>
-              
-        <div class="container px-5 my-5">
-            <form id="contactForm" method="POST" action="/suggestion">
-                <div class="mb-3">
-                    <label class="form-label d-block">Meal Type</label>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input meal-checkbox" id="breakfast" type="checkbox" name="mealType" />
-                        <label class="form-check-label" for="breakfast">Breakfast</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input meal-checkbox" id="lunch" type="checkbox" name="mealType" />
-                        <label class="form-check-label" for="lunch">Lunch</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input meal-checkbox" id="snacks" type="checkbox" name="mealType" />
-                        <label class="form-check-label" for="snacks">Snacks</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input meal-checkbox" id="dinner" type="checkbox" name="mealType" />
-                        <label class="form-check-label" for="dinner">Dinner</label>
-                    </div>
-                </div>
-                
-                <div id="meal-fields">
-                    <div class="meal-section" id="breakfast-section">
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" id="foodItemSuggestionBreakfast" name="breakfast" placeholder="Food Item Suggestion (Breakfast)" style="height: 10rem;"></textarea>
-                            <label for="foodItemSuggestionBreakfast">Food Item Suggestion (Breakfast)</label>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label d-block">Feasible for large production?</label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="breakfastFeasible" value="yes" />
-                                <label class="form-check-label">Yes</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="breakfastFeasible" value="no" />
-                                <label class="form-check-label">No</label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="meal-section" id="lunch-section">
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" id="foodItemSuggestionLunch" name="lunch" placeholder="Food Item Suggestion (Lunch)" style="height: 10rem;"></textarea>
-                            <label for="foodItemSuggestionLunch">Food Item Suggestion (Lunch)</label>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label d-block">Feasible for large production?</label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="lunchFeasible" value="yes" />
-                                <label class="form-check-label">Yes</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="lunchFeasible" value="no" />
-                                <label class="form-check-label">No</label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="meal-section" id="snacks-section">
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" name="snacks" id="foodItemSuggestionSnacks" placeholder="Food Item Suggestion (Snacks)" style="height: 10rem;"></textarea>
-                            <label for="foodItemSuggestionSnacks">Food Item Suggestion (Snacks)</label>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label d-block">Feasible for large production?</label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="snacksFeasible" value="yes" />
-                                <label class="form-check-label">Yes</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="snacksFeasible" value="no" />
-                                <label class="form-check-label">No</label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="meal-section" id="dinner-section">
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" name="dinner" id="foodItemSuggestionDinner" placeholder="Food Item Suggestion (Dinner)" style="height: 10rem;"></textarea>
-                            <label for="foodItemSuggestionDinner">Food Item Suggestion (Dinner)</label>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label d-block">Feasible for large production?</label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="dinnerFeasible" value="yes" />
-                                <label class="form-check-label">Yes</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="dinnerFeasible" value="no" />
-                                <label class="form-check-label">No</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="d-grid">
-                    <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Submit</button>
-                </div>
-            </form>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>MessMate</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Responsive navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container px-5">
+        <a class="navbar-brand" href="#!">MessMate</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/logout"
+                >Logout</a
+              >
+            </li>
+          </ul>
         </div>
-        
-        <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            function toggleMealSections() {
-                document.querySelectorAll(".meal-section").forEach(section => {
-                    section.style.display = "none";
-                });
-                document.querySelectorAll(".meal-checkbox:checked").forEach(checkbox => {
-                    document.getElementById(`${checkbox.id}-section`).style.display = "block";
-                });
-            }
-            
-            document.querySelectorAll(".meal-checkbox").forEach(checkbox => {
-                checkbox.addEventListener("change", toggleMealSections);
+      </div>
+    </nav>
+    <!-- Header-->
+    <header class="bg-dark py-5">
+      <div class="container px-5">
+        <div class="row gx-5 justify-content-center">
+          <div class="col-lg-6">
+            <div class="text-center my-5">
+              <h1 class="display-5 fw-bolder text-white mb-2">
+                Welcome, <%= user.name %>!
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Features section-->
+    <section class="py-5 border-bottom" id="features">
+      <div class="container px-5 my-1">
+        <h3>My Profile</h3>
+        <hr />
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Hostel Type</th>
+              <th>Block</th>
+              <th>Mess Type</th>
+              <th>Mess</th>
+              <th>Update</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td name="hosteltype"><%= user.hostelType %></td>
+              <td name="hostel"><%= user.hostel %></td>
+              <td name="messtype"><%= user.messType %></td>
+              <td name="mess"><%= user.mess %></td>
+              <td>
+                <a href="/update"><i class="bi bi-pencil-square"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <% if (successMessage.length > 0) { %>
+    <div class="alert alert-success"><%= successMessage %></div>
+    <% } %> <% if (errorMessage.length > 0) { %>
+    <div class="alert alert-danger"><%= errorMessage %></div>
+    <% } %>
+
+    <div class="container px-5 my-5">
+      <h3>Submit a Suggestion</h3>
+      <hr />
+
+      <form id="contactForm" method="POST" action="/suggestion">
+        <div class="mb-3">
+          <label class="form-label d-block">Meal Type</label>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input meal-checkbox"
+              id="breakfast"
+              type="checkbox"
+              name="mealType"
+            />
+            <label class="form-check-label" for="breakfast">Breakfast</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input meal-checkbox"
+              id="lunch"
+              type="checkbox"
+              name="mealType"
+            />
+            <label class="form-check-label" for="lunch">Lunch</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input meal-checkbox"
+              id="snacks"
+              type="checkbox"
+              name="mealType"
+            />
+            <label class="form-check-label" for="snacks">Snacks</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input meal-checkbox"
+              id="dinner"
+              type="checkbox"
+              name="mealType"
+            />
+            <label class="form-check-label" for="dinner">Dinner</label>
+          </div>
+        </div>
+
+        <div id="meal-fields">
+          <div class="meal-section" id="breakfast-section">
+            <div class="form-floating mb-3">
+              <textarea
+                class="form-control"
+                id="foodItemSuggestionBreakfast"
+                name="breakfast"
+                placeholder="Food Item Suggestion (Breakfast)"
+                style="height: 10rem"
+              ></textarea>
+              <label for="foodItemSuggestionBreakfast"
+                >Food Item Suggestion (Breakfast)</label
+              >
+            </div>
+            <div class="mb-3">
+              <label class="form-label d-block"
+                >Feasible for large production?</label
+              >
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="breakfastFeasible"
+                  value="yes"
+                />
+                <label class="form-check-label">Yes</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="breakfastFeasible"
+                  value="no"
+                />
+                <label class="form-check-label">No</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="meal-section" id="lunch-section">
+            <div class="form-floating mb-3">
+              <textarea
+                class="form-control"
+                id="foodItemSuggestionLunch"
+                name="lunch"
+                placeholder="Food Item Suggestion (Lunch)"
+                style="height: 10rem"
+              ></textarea>
+              <label for="foodItemSuggestionLunch"
+                >Food Item Suggestion (Lunch)</label
+              >
+            </div>
+            <div class="mb-3">
+              <label class="form-label d-block"
+                >Feasible for large production?</label
+              >
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="lunchFeasible"
+                  value="yes"
+                />
+                <label class="form-check-label">Yes</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="lunchFeasible"
+                  value="no"
+                />
+                <label class="form-check-label">No</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="meal-section" id="snacks-section">
+            <div class="form-floating mb-3">
+              <textarea
+                class="form-control"
+                name="snacks"
+                id="foodItemSuggestionSnacks"
+                placeholder="Food Item Suggestion (Snacks)"
+                style="height: 10rem"
+              ></textarea>
+              <label for="foodItemSuggestionSnacks"
+                >Food Item Suggestion (Snacks)</label
+              >
+            </div>
+            <div class="mb-3">
+              <label class="form-label d-block"
+                >Feasible for large production?</label
+              >
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="snacksFeasible"
+                  value="yes"
+                />
+                <label class="form-check-label">Yes</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="snacksFeasible"
+                  value="no"
+                />
+                <label class="form-check-label">No</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="meal-section" id="dinner-section">
+            <div class="form-floating mb-3">
+              <textarea
+                class="form-control"
+                name="dinner"
+                id="foodItemSuggestionDinner"
+                placeholder="Food Item Suggestion (Dinner)"
+                style="height: 10rem"
+              ></textarea>
+              <label for="foodItemSuggestionDinner"
+                >Food Item Suggestion (Dinner)</label
+              >
+            </div>
+            <div class="mb-3">
+              <label class="form-label d-block"
+                >Feasible for large production?</label
+              >
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="dinnerFeasible"
+                  value="yes"
+                />
+                <label class="form-check-label">Yes</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="dinnerFeasible"
+                  value="no"
+                />
+                <label class="form-check-label">No</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-grid">
+          <button
+            class="btn btn-primary btn-lg"
+            id="submitButton"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+    <section class="py-5 border-bottom" id="features">
+      <div class="container px-5 my-1">
+        <h3>My Suggestions</h3>
+        <hr />
+        <% if (results.length > 0) { %>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Breakfast</th>
+                        <th>Lunch</th>
+                        <th>Snacks</th>
+                        <th>Dinner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% results.forEach(suggestion => { %>
+                        <tr>
+                            <td><%= suggestion.breakfast %></td>
+                            <td><%= suggestion.lunch %></td>
+                            <td><%= suggestion.snacks %></td>
+                            <td><%= suggestion.dinner %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No suggestions submitted yet.</p>
+        <% } %>
+      </div>
+    </section>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        function toggleMealSections() {
+          document.querySelectorAll(".meal-section").forEach((section) => {
+            section.style.display = "none";
+          });
+          document
+            .querySelectorAll(".meal-checkbox:checked")
+            .forEach((checkbox) => {
+              document.getElementById(`${checkbox.id}-section`).style.display =
+                "block";
             });
-            
-            toggleMealSections();
+        }
+
+        document.querySelectorAll(".meal-checkbox").forEach((checkbox) => {
+          checkbox.addEventListener("change", toggleMealSections);
         });
-        </script>
-               
-        <!-- Footer-->
-        <footer class="py-5 bg-dark">
-            <div class="container px-5"><p class="m-0 text-center text-white">Copyright &copy; MessMate. All Rights Reserved.</p></div>
-        </footer>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <!-- * *                               SB Forms JS                               * *-->
-        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-    </body>
+
+        toggleMealSections();
+      });
+    </script>
+
+    <!-- Footer-->
+    <footer class="py-5 bg-dark">
+      <div class="container px-5">
+        <p class="m-0 text-center text-white">
+          Copyright &copy; MessMate. All Rights Reserved.
+        </p>
+      </div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    <!-- * *                               SB Forms JS                               * *-->
+    <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+  </body>
 </html>

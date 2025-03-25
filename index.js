@@ -16,7 +16,7 @@ import { Strategy } from "passport-local";
 import session from "express-session";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import flash from 'connect-flash';
+import flash from "connect-flash";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -50,9 +50,9 @@ App.post("/signup", async (req, res) => {
     const newUser = new User({
       name: req.body.name,
       email: req.body.email,
-      hostelType:req.body.hostelType,
+      hostelType: req.body.hostelType,
       hostel: req.body.hostel,
-      messType:req.body.messType,
+      messType: req.body.messType,
       mess: req.body.mess,
       password: req.body.password,
     });
@@ -93,36 +93,56 @@ App.get("/home", (req, res) => {
   res.render("home.ejs");
 });
 
-
-var ht="none";
-var mt="none";
-var formmodel="none";
+var ht = "none";
+var mt = "none";
+var formmodel = "none";
+var dbcollection = "none";
 
 App.get("/dashboard", async (req, res) => {
   if (req.isAuthenticated()) {
     const loggedInUser = req.user;
-    res.render("dashboard", { user: loggedInUser, successMessage: req.flash("success"),
-      errorMessage: req.flash("error"), });
 
-    ht = req.user.hostelType;
-    mt = req.user.messType;
-
-    if (ht === "Mens") {
-      if (mt === "Veg") {
+    // Set formmodel based on user's hostel and mess type
+    if (req.user.hostelType === "Mens") {
+      if (req.user.messType === "Veg") {
         formmodel = MHMenuVeg;
-      } else if (mt === "Non Veg") {
+      } else if (req.user.messType === "Non Veg") {
         formmodel = MHMenuNonVeg;
-      } else if (mt === "Special") {
+      } else if (req.user.messType === "Special") {
         formmodel = MHMenuSpecial;
       }
-    } else if (ht === "Womens") {
-      if (mt === "Veg") {
+    } else if (req.user.hostelType === "Womens") {
+      if (req.user.messType === "Veg") {
         formmodel = LHMenuVeg;
-      } else if (mt === "Non Veg") {
+      } else if (req.user.messType === "Non Veg") {
         formmodel = LHMenuNonVeg;
-      } else if (mt === "Special") {
+      } else if (req.user.messType === "Special") {
         formmodel = LHMenuSpecial;
       }
+    }
+
+    if (!formmodel) {
+      req.flash("error", "Invalid form model.");
+      return res.redirect("/dashboard");
+    }
+
+    try {
+      const filter = { submitted_by: req.user.name };
+      
+      const results = await formmodel.find(filter);
+      console.log(results);
+
+      res.render("dashboard", {
+        user: loggedInUser,
+        results, 
+        successMessage: req.flash("success"),
+        errorMessage: req.flash("error"),
+      });
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      req.flash("error", "Error fetching data.");
+      res.redirect("/dashboard");
     }
   } else {
     res.redirect("/login");
@@ -138,10 +158,10 @@ App.post("/suggestion", async (req, res) => {
 
     const newSuggestion = new formmodel({
       submitted_by: req.user.name,
-      hostel_type:req.user.hosteltype,
-      block:req.user.hostel,
-      mess_type:req.user.messtype,
-      mess:req.user.mess,
+      hostel_type: req.user.hosteltype,
+      block: req.user.hostel,
+      mess_type: req.user.messtype,
+      mess: req.user.mess,
       breakfast: req.body.breakfast,
       lunch: req.body.lunch,
       snacks: req.body.snacks,
@@ -157,7 +177,6 @@ App.post("/suggestion", async (req, res) => {
     res.redirect("/dashboard");
   }
 });
-
 
 passport.use(
   new Strategy(
