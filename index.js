@@ -17,13 +17,16 @@ import session from "express-session";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import flash from "connect-flash";
+import path from "path";
+
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const App = express();
 App.use(flash());
 const PORT = 3000;
-App.use(express.static(__dirname));
+App.use(express.static(path.join(__dirname, "public")));
+
 
 App.use(
   session({
