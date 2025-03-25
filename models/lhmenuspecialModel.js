@@ -10,6 +10,6 @@ const lhmenuspecialSchema = new mongoose.Schema({
 
 });
 
-const LHMenuSpecial = mongoose.model('LHMenuSpecial', lhmenuspecialSchema,'lhmenuspecials');
+const LHMenuSpecial = mongoose.model('LHMenuSpecial', lhmenuspecialSchema);
 
 export default LHMenuSpecial;

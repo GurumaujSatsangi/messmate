@@ -10,6 +10,6 @@ const lhmenunonvegSchema = new mongoose.Schema({
 
 });
 
-const LHMenuNonVeg = mongoose.model('LHMenuNonVeg', lhmenunonvegSchema,'lhmenunonvegs');
+const LHMenuNonVeg = mongoose.model('LHMenuNonVeg', lhmenunonvegSchema);
 
 export default LHMenuNonVeg;

@@ -10,6 +10,6 @@ const mhmenuvegSchema = new mongoose.Schema({
 
 });
 
-const MHMenuVeg = mongoose.model('MHMenuVeg', mhmenuvegSchema,'mhmenuvegs');
+const MHMenuVeg = mongoose.model('MHMenuVeg', mhmenuvegSchema);
 
 export default MHMenuVeg;

@@ -94,42 +94,65 @@ App.get("/home", (req, res) => {
 });
 
 
-
+var ht="none";
+var mt="none";
+var formmodel="none";
 
 App.get("/dashboard", async (req, res) => {
   if (req.isAuthenticated()) {
-      const loggedInUser = req.user;
-      let dateParam = req.query.date || new Date().toISOString().split("T")[0];
-      let currentDate = new Date(dateParam);
-      let prevDate = new Date(currentDate);
-      prevDate.setDate(prevDate.getDate() - 1);
-      let nextDate = new Date(currentDate);
-      nextDate.setDate(nextDate.getDate() + 1);
+    const loggedInUser = req.user;
+    res.render("dashboard", { user: loggedInUser, successMessage: req.flash("success"),
+      errorMessage: req.flash("error"), });
 
-      try {
-        const mealData = await MHMenu.findOne({ date: currentDate.toISOString().split("T")[0] });         
-         const meals = [
-              { name: "Breakfast", details: mealData?.breakfast || "No data available" },
-              { name: "Lunch", details: mealData?.lunch || "No data available" },
-              { name: "Snacks", details: mealData?.snacks || "No data available" },
-              { name: "Dinner", details: mealData?.dinner || "No data available" }
-          ];
+    ht = req.user.hostelType;
+    mt = req.user.messType;
 
-          res.render("dashboard", {
-              user: loggedInUser,
-              formattedDate: currentDate.toDateString(),
-              prevDate: prevDate.toISOString().split("T")[0],
-              nextDate: nextDate.toISOString().split("T")[0],
-              meals
-          });
-      } catch (error) {
-          console.error("Error fetching meals:", error);
-          res.status(500).send("Internal Server Error");
+    if (ht === "Mens") {
+      if (mt === "Veg") {
+        formmodel = MHMenuVeg;
+      } else if (mt === "Non Veg") {
+        formmodel = MHMenuNonVeg;
+      } else if (mt === "Special") {
+        formmodel = MHMenuSpecial;
       }
+    } else if (ht === "Womens") {
+      if (mt === "Veg") {
+        formmodel = LHMenuVeg;
+      } else if (mt === "Non Veg") {
+        formmodel = LHMenuNonVeg;
+      } else if (mt === "Special") {
+        formmodel = LHMenuSpecial;
+      }
+    }
   } else {
-      res.redirect("/login");
+    res.redirect("/login");
   }
 });
+
+
+App.post("/suggestion", async (req, res) => {
+  try {
+    if (formmodel === "none") {
+      throw new Error("Invalid form model");
+    }
+
+    const newSuggestion = new formmodel({
+      breakfast: req.body.breakfast,
+      lunch: req.body.lunch,
+      snacks: req.body.snacks,
+      dinner: req.body.dinner,
+    });
+
+    await newSuggestion.save();
+
+    req.flash("success", "Suggestion saved succesfully!");
+    res.redirect("/dashboard"); // Redirect to the dashboard after submission
+  } catch (error) {
+    req.flash("error", "Error saving suggestion: " + error.message);
+    res.redirect("/dashboard");
+  }
+});
+
 
 passport.use(
   new Strategy(
