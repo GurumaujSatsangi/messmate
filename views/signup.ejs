@@ -55,8 +55,8 @@
                                     <div class="form-floating mb-3">
                                         <select class="form-select" id="hostelType" name="hostelType" required>
                                             <option value="">Select Hostel Type</option>
-                                            <option value="mens">Men's Hostel</option>
-                                            <option value="ladies">Ladies Hostel</option>
+                                            <option value="Mens">Men's Hostel</option>
+                                            <option value="Ladies">Ladies Hostel</option>
                                         </select>
                                         <label for="hostelType">Hostel Type</label>
                                     </div>
@@ -73,9 +73,9 @@
                                     <div class="form-floating mb-3">
                                         <select class="form-select" id="messType" name="messType" required>
                                             <option value="">Select Mess Type</option>
-                                            <option value="veg">Veg</option>
-                                            <option value="nonveg">Non-Veg</option>
-                                            <option value="special">Special</option>
+                                            <option value="Veg">Veg</option>
+                                            <option value="NonVeg">Non-Veg</option>
+                                            <option value="Special">Special</option>
                                         </select>
                                         <label for="messType">Mess Type</label>
                                     </div>
@@ -118,20 +118,20 @@
                                     const mess = document.getElementById("mess");
                         
                                     const hostels = {
-                                        mens: [
+                                        Mens: [
                                             "MH A", "MH B", "MH B ANNEX", "MH C", "MH D", "MH D ANNEX", "MH E", "MH F",
                                             "MH G", "MH H", "MH I", "MH J", "MH J ANNEX", "MH K", "MH L", "MH M", "MH M ANNEX",
                                             "MH N", "MH N ANNEX", "MH P", "MH Q", "MH R", "MH S", "MH T"
                                         ],
-                                        ladies: [
+                                        Ladies: [
                                             "LH A", "LH B", "LH C", "LH D", "LH E", "LH F", "LH G", "LH H", "LH J", "RGT H", "LH GH (Annex)"
                                         ]
                                     };
                         
                                     const messOptions = {
-                                        veg: ["Zenith Veg", "SRCC Veg", "Darling Veg"],
-                                        nonveg: ["Zenith Non-Veg", "SRCC Non-Veg", "Darling Non-Veg"],
-                                        special: ["Zenith Special", "SRCC Special", "Darling Special"]
+                                        Veg: ["Zenith Veg", "SRCC Veg", "Darling Veg"],
+                                        NonVeg: ["Zenith Non-Veg", "SRCC Non-Veg", "Darling Non-Veg"],
+                                        Special: ["Zenith Special", "SRCC Special", "Darling Special"]
                                     };
                         
                                     // Update hostel dropdown based on hostel type selection

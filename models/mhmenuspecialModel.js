@@ -2,10 +2,14 @@
 import mongoose from "mongoose";
 
 const mhmenuspecialSchema = new mongoose.Schema({
-    date: Date,
+    submitted_by:String,
+    hostel_type:String,
+    block:String,
+    mess_type:String,
+    mess:String,
     breakfast: String,
     lunch: String,
-    snack: String,
+    snacks: String,
     dinner: String
 
 });

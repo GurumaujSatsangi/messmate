@@ -58,7 +58,7 @@ App.post("/signup", async (req, res) => {
     });
     await newUser.save();
     req.flash("success", "Form data saved successfully!"); // Flash a success message
-    res.redirect("/signup"); // Redirect to the signup page or another route
+    res.redirect("/login"); // Redirect to the signup page or another route
   } catch (error) {
     req.flash("error", "Error saving form data: " + error.message); // Flash the error message
     res.redirect("/signup"); // Redirect to the signup page or another route
@@ -106,15 +106,15 @@ App.get("/dashboard", async (req, res) => {
     if (req.user.hostelType === "Mens") {
       if (req.user.messType === "Veg") {
         formmodel = MHMenuVeg;
-      } else if (req.user.messType === "Non Veg") {
+      } else if (req.user.messType === "NonVeg") {
         formmodel = MHMenuNonVeg;
       } else if (req.user.messType === "Special") {
         formmodel = MHMenuSpecial;
       }
-    } else if (req.user.hostelType === "Womens") {
+    } else if (req.user.hostelType === "Ladies") {
       if (req.user.messType === "Veg") {
         formmodel = LHMenuVeg;
-      } else if (req.user.messType === "Non Veg") {
+      } else if (req.user.messType === "NonVeg") {
         formmodel = LHMenuNonVeg;
       } else if (req.user.messType === "Special") {
         formmodel = LHMenuSpecial;
