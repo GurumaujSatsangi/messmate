@@ -137,6 +137,11 @@ App.post("/suggestion", async (req, res) => {
     }
 
     const newSuggestion = new formmodel({
+      submitted_by: req.user.name,
+      hostel_type:req.user.hosteltype,
+      block:req.user.hostel,
+      mess_type:req.user.messtype,
+      mess:req.user.mess,
       breakfast: req.body.breakfast,
       lunch: req.body.lunch,
       snacks: req.body.snacks,
