@@ -16,6 +16,10 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import session from "express-session";
 import { dirname } from "path";
+import path from 'path';
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { fileURLToPath } from "url";
 import flash from "connect-flash";
 
@@ -23,8 +27,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const App = express();
 App.use(flash());
-const PORT = 3000;
-App.use(express.static(__dirname));
+const PORT = process.env.PORT || 3000;
+App.use(express.static(path.join(__dirname, 'public')));
 
 App.use(
   session({
@@ -35,9 +39,9 @@ App.use(
   })
 );
 
-mongoose.connect(
-  "mongodb+srv://gurumaujsatsangi:ICb7Am2HA2rRsq5V@cluster0.ckh6k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-);
+mongoose.connect(process.env.MONGODB_URI, {
+  
+});
 
 App.use(bodyParser.urlencoded({ extended: true }));
 App.use(bodyParser.json());
