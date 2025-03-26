@@ -30,14 +30,23 @@ App.use(flash());
 const PORT = process.env.PORT || 3000;
 App.use(express.static(path.join(__dirname, 'public')));
 
-App.use(
-  session({
-    secret: "TOPSECRETWORD",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 1000 * 60 * 60 },
-  })
-);
+App.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { 
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 1000 * 60 * 60 
+  }
+}));
+
+App.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).render('error', { 
+    message: 'Something went wrong!',
+    error: process.env.NODE_ENV === 'development' ? err : {} 
+  });
+});
 
 mongoose.connect(process.env.MONGODB_URI);
 App.use(bodyParser.urlencoded({ extended: true }));
