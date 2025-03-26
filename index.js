@@ -324,6 +324,10 @@ App.get("/error", (req, res) => {
   res.render("error.ejs");
 });
 
-App.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+export default App;
+
+if (process.env.NODE_ENV !== 'production') {
+  App.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}

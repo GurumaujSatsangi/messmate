@@ -8,8 +8,24 @@
   ],
   "routes": [
     {
+      "src": "/login",
+      "dest": "index.js"
+    },
+    {
+      "src": "/signup",
+      "dest": "index.js"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "index.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "index.js"
     }
-  ]
+  ],
+  "env": {
+    "MONGODB_URI": "@mongodb_uri",
+    "SESSION_SECRET": "@session_secret"
+  }
 }
