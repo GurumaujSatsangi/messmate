@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   messType: { type: String, required: true },
 
   mess: { type: String, required: true },
-  password: { type: String, required: true },
+  password: { type: String, required: true }
 });
 
 userSchema.statics.login = async function (email, password) {

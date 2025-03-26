@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import User from "./models/userModel.js";
 import LHMenuVeg from "./models/lhmenuvegModel.js";
+import Admin from "./models/adminModel.js";
 import LHMenuNonVeg from "./models/lhmenunonvegModel.js";
 import LHMenuSpecial from "./models/lhmenuspecialModel.js";
 
@@ -25,7 +26,6 @@ App.use(flash());
 const PORT = 3000;
 App.use(express.static(__dirname));
 
-
 App.use(
   session({
     secret: "TOPSECRETWORD",
@@ -47,7 +47,7 @@ App.use(passport.session());
 App.set("views", __dirname + "/views");
 App.set("view engine", "ejs");
 App.post("/signup", async (req, res) => {
-  try {
+  try {   
     const newUser = new User({
       name: req.body.name,
       email: req.body.email,
@@ -75,7 +75,14 @@ App.post("/update", async (req, res) => {
   try {
     const filter = { email: req.user.email };
     console.log(req.user.email);
-    const update = { $set: { hostelType: req.body.hostelType,hostel:req.body.hostel,messType:req.body.messType,mess:req.body.mess } };
+    const update = {
+      $set: {
+        hostelType: req.body.hostelType,
+        hostel: req.body.hostel,
+        messType: req.body.messType,
+        mess: req.body.mess,
+      },
+    };
 
     const result = await User.updateOne(filter, update);
 
@@ -93,7 +100,6 @@ App.post("/update", async (req, res) => {
   }
 });
 
-
 App.post(
   "/login",
   passport.authenticate("local", {
@@ -103,10 +109,62 @@ App.post(
   })
 );
 
+
 App.get("/login", (req, res) => {
   const messages = req.flash("error"); // Retrieve error flash messages
   res.render("login.ejs", { messages });
 });
+
+App.get("/admin/login", (req, res) => {
+  const messages = req.flash("error"); // Retrieve error flash messages
+  res.render("admin/login", { messages });
+});
+
+App.get("/admin/dashboard", async (req, res) => {
+  if (req.isAuthenticated()) {
+    const loggedInAdmin = req.user;
+    res.render("admin/dashboard", {
+      admin: loggedInAdmin,
+     
+      successMessage: req.flash("success"),
+      errorMessage: req.flash("error"),
+    });
+
+    // Set formmodel based on user's hostel and mess type
+
+  } else {
+    res.redirect("/admin/login");
+  }
+});
+
+// Add a new strategy for admin authentication
+passport.use("admin-local",
+  new Strategy(
+    { usernameField: "email" }, // Explicitly define email as username field
+    async function (email, password, cb) {
+      try {
+        const admin = await Admin.findOne({ email }); // Find user by email
+        if (!admin || admin.password !== password) {
+          return cb(null, false, { message: "Invalid credentials" });
+        }
+        return cb(null, admin);
+      } catch (error) {
+        return cb(error);
+      }
+    }
+  )
+);
+
+App.post(
+  "/admin/login",
+  passport.authenticate("admin-local", {
+    successRedirect: "/admin/dashboard",
+    failureRedirect: "/admin/login",
+    failureFlash: true,
+  })
+);
+
+
 
 App.get("/signup", (req, res) => {
   const successMessage = req.flash("success");
@@ -157,17 +215,16 @@ App.get("/dashboard", async (req, res) => {
 
     try {
       const filter = { submitted_by: req.user.name };
-      
+
       const results = await formmodel.find(filter);
       console.log(results);
 
       res.render("dashboard", {
         user: loggedInUser,
-        results, 
+        results,
         successMessage: req.flash("success"),
         errorMessage: req.flash("error"),
       });
-
     } catch (error) {
       console.error("Error fetching data:", error);
       req.flash("error", "Error fetching data.");
@@ -177,7 +234,6 @@ App.get("/dashboard", async (req, res) => {
     res.redirect("/login");
   }
 });
-
 
 App.post("/suggestion", async (req, res) => {
   try {
@@ -225,17 +281,23 @@ passport.use(
 );
 
 passport.serializeUser((user, cb) => {
-  cb(null, user.id); // Serialize the user's ID
+  cb(null, { id: user.id, type: user instanceof Admin ? "admin" : "user" });
 });
 
-passport.deserializeUser(async (id, cb) => {
+passport.deserializeUser(async (obj, cb) => {
   try {
-    const user = await User.findById(id); // Find user by ID
+    let user;
+    if (obj.type === "admin") {
+      user = await Admin.findById(obj.id);
+    } else {
+      user = await User.findById(obj.id);
+    }
     cb(null, user);
   } catch (error) {
     cb(error);
   }
 });
+
 
 App.get("/logout", (req, res, next) => {
   req.logout(function (err) {
@@ -244,6 +306,16 @@ App.get("/logout", (req, res, next) => {
     }
     req.flash("success", "Logged out successfully!");
     res.redirect("/login");
+  });
+});
+
+App.get("/admin/logout", (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    req.flash("success", "Logged out successfully!");
+    res.redirect("/admin/login");
   });
 });
 
