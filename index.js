@@ -40,7 +40,8 @@ App.use(
 );
 
 mongoose.connect(process.env.MONGODB_URI, {
-  
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
 App.use(bodyParser.urlencoded({ extended: true }));
