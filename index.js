@@ -39,11 +39,7 @@ App.use(
   })
 );
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
+mongoose.connect(process.env.MONGODB_URI);
 App.use(bodyParser.urlencoded({ extended: true }));
 App.use(bodyParser.json());
 
