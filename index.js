@@ -66,6 +66,34 @@ App.post("/signup", async (req, res) => {
   }
 });
 
+App.post("/update", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    req.flash("error", "Unauthorized access!");
+    return res.redirect("/login");
+  }
+
+  try {
+    const filter = { email: req.user.email };
+    console.log(req.user.email);
+    const update = { $set: { hostelType: req.body.hostelType,hostel:req.body.hostel,messType:req.body.messType,mess:req.body.mess } };
+
+    const result = await User.updateOne(filter, update);
+
+    if (result.modifiedCount > 0) {
+      req.flash("success", "Profile updated successfully!");
+    } else {
+      req.flash("error", "No changes were made.");
+    }
+
+    res.redirect("/dashboard");
+  } catch (error) {
+    console.error("Error updating document:", error);
+    req.flash("error", "Error updating user details.");
+    res.redirect("/dashboard");
+  }
+});
+
+
 App.post(
   "/login",
   passport.authenticate("local", {
