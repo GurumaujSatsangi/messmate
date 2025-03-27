@@ -1,17 +1,17 @@
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import User from "./models/userModel.js";
-import LHMenuVeg from "./models/lhmenuvegModel.js";
-import Admin from "./models/adminModel.js";
-import LHMenuNonVeg from "./models/lhmenunonvegModel.js";
-import LHMenuSpecial from "./models/lhmenuspecialModel.js";
+import User from "../models/userModel.js";
+import LHMenuVeg from "../models/lhmenuvegModel.js";
+import Admin from "../models/adminModel.js";
+import LHMenuNonVeg from "../models/lhmenunonvegModel.js";
+import LHMenuSpecial from "../models/lhmenuspecialModel.js";
 import serverless from "serverless-http";
 
-import MHMenuVeg from "./models/mhmenuvegModel.js";
-import MHMenuNonVeg from "./models/mhmenunonvegModel.js";
+import MHMenuVeg from "../models/mhmenuvegModel.js";
+import MHMenuNonVeg from "../models/mhmenunonvegModel.js";
 
-import MHMenuSpecial from "./models/mhmenuspecialModel.js";
+import MHMenuSpecial from "../models/mhmenuspecialModel.js";
 
 import passport from "passport";
 import { Strategy } from "passport-local";
@@ -29,33 +29,31 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const App = express();
 App.use(flash());
 const PORT = process.env.PORT || 3000;
-App.use(express.static(path.join(__dirname, 'public')));
+App.use(express.static(path.join(__dirname, '../public')));
 
 App.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || "TOPSECRET",
   resave: false,
   saveUninitialized: true,
   cookie: { 
-    secure: process.env.NODE_ENV === 'production',
     maxAge: 1000 * 60 * 60 
   }
 }));
 
-App.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).render('error', { 
-    message: 'Something went wrong!',
-    error: process.env.NODE_ENV === 'development' ? err : {} 
-  });
-});
-
-mongoose.connect(process.env.MONGODB_URI);
-App.use(bodyParser.urlencoded({ extended: true }));
+// App.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(500).render('error', { 
+//     message: 'Something went wrong!',
+//   });
+// });
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));App.use(bodyParser.urlencoded({ extended: true }));
 App.use(bodyParser.json());
 
 App.use(passport.initialize());
 App.use(passport.session());
-App.set("views", __dirname + "/views");
+App.set("views", path.join(__dirname, "../views"));
 App.set("view engine", "ejs");
 App.post("/signup", async (req, res) => {
   try {   
@@ -330,10 +328,9 @@ App.get("/admin/logout", (req, res, next) => {
   });
 });
 
-App.get("/error", (req, res) => {
-  res.render("error.ejs");
-});
+
 
 
 App.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
+export default App;
