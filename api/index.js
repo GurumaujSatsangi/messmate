@@ -329,8 +329,11 @@ App.get("/admin/logout", (req, res, next) => {
 });
 
 
+if (process.env.NODE_ENV != "production") {
+  App.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
 
-
-App.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 export default serverless(App);
