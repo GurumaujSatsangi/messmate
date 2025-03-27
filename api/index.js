@@ -27,6 +27,8 @@ import flash from "connect-flash";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const App = express();
+App.use(bodyParser.urlencoded({ extended: true }));
+App.use(bodyParser.json());
 App.use(flash());
 const PORT = process.env.PORT || 3000;
 App.use(express.static(path.join(__dirname, '../public')));
@@ -48,8 +50,14 @@ App.use(session({
 // });
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));App.use(bodyParser.urlencoded({ extended: true }));
-App.use(bodyParser.json());
+  .catch(err => console.error('MongoDB connection error:', err));
+ 
+
+App.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+});
+
 
 App.use(passport.initialize());
 App.use(passport.session());
@@ -295,17 +303,16 @@ passport.serializeUser((user, cb) => {
 
 passport.deserializeUser(async (obj, cb) => {
   try {
-    let user;
-    if (obj.type === "admin") {
-      user = await Admin.findById(obj.id);
-    } else {
-      user = await User.findById(obj.id);
-    }
+    let user = obj.type === "admin" 
+      ? await Admin.findById(obj.id)
+      : await User.findById(obj.id);
+      
     cb(null, user);
   } catch (error) {
     cb(error);
   }
 });
+
 
 
 App.get("/logout", (req, res, next) => {
