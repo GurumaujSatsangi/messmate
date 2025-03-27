@@ -33,66 +33,23 @@ App.use(flash());
 const PORT = process.env.PORT || 3000;
 App.use(express.static(path.join(__dirname, '../public')));
 
-// MongoDB Connection with optimized settings for serverless
-let cachedDb = null;
-
-const connectDB = async () => {
-  if (cachedDb) {
-    return cachedDb;
-  }
-
-  try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000,
-      maxPoolSize: 10,
-      minPoolSize: 5,
-      connectTimeoutMS: 10000,
-      retryWrites: true,
-      retryReads: true,
-    });
-    console.log('Connected to MongoDB');
-    cachedDb = conn;
-    return conn;
-  } catch (err) {
-    console.error('MongoDB connection error:', err);
-    throw err;
-  }
-};
-
-// Connect to MongoDB before handling any requests
-connectDB().catch(err => {
-  console.error('Failed to connect to MongoDB:', err);
-});
-
-// Optimize session settings for serverless
 App.use(session({
   secret: process.env.SESSION_SECRET || "TOPSECRET",
   resave: false,
   saveUninitialized: true,
   cookie: { 
-    maxAge: 1000 * 60 * 60,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax'
-  },
-  name: 'sessionId' // Custom session name
+    maxAge: 1000 * 60 * 60 
+  }
 }));
 
-// Add error handling middleware
-App.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).render('error', { 
-    message: 'Something went wrong!',
-  });
-});
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 App.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
-
 
 App.use(passport.initialize());
 App.use(passport.session());
@@ -161,7 +118,6 @@ App.post(
   })
 );
 
-
 App.get("/login", (req, res) => {
   const messages = req.flash("error"); // Retrieve error flash messages
   res.render("login.ejs", { messages });
@@ -215,8 +171,6 @@ App.post(
     failureFlash: true,
   })
 );
-
-
 
 App.get("/signup", (req, res) => {
   const successMessage = req.flash("success");
@@ -348,8 +302,6 @@ passport.deserializeUser(async (obj, cb) => {
   }
 });
 
-
-
 App.get("/logout", (req, res, next) => {
   req.logout(function (err) {
     if (err) {
@@ -370,13 +322,11 @@ App.get("/admin/logout", (req, res, next) => {
   });
 });
 
-
 if (process.env.NODE_ENV != "production") {
   App.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
   });
 }
-
 
 export default App;
 export const handler = serverless(App);
