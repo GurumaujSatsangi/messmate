@@ -333,4 +333,4 @@ App.get("/admin/logout", (req, res, next) => {
 
 App.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-export default App;
+export default serverless(App);
