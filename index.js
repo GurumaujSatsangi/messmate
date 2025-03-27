@@ -337,4 +337,3 @@ App.get("/error", (req, res) => {
 
 App.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-export default serverless(App);
