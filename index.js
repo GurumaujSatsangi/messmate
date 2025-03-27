@@ -6,6 +6,7 @@ import LHMenuVeg from "./models/lhmenuvegModel.js";
 import Admin from "./models/adminModel.js";
 import LHMenuNonVeg from "./models/lhmenunonvegModel.js";
 import LHMenuSpecial from "./models/lhmenuspecialModel.js";
+import serverless from "serverless-http";
 
 import MHMenuVeg from "./models/mhmenuvegModel.js";
 import MHMenuNonVeg from "./models/mhmenunonvegModel.js";
@@ -333,10 +334,7 @@ App.get("/error", (req, res) => {
   res.render("error.ejs");
 });
 
-export default App;
 
-if (process.env.NODE_ENV !== 'production') {
-  App.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
-}
+App.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+export default serverless(App);
