@@ -34,7 +34,13 @@ const PORT = process.env.PORT || 3000;
 App.use(express.static(path.join(__dirname, '../public')));
 
 // MongoDB Connection with optimized settings for serverless
+let cachedDb = null;
+
 const connectDB = async () => {
+  if (cachedDb) {
+    return cachedDb;
+  }
+
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
@@ -43,16 +49,23 @@ const connectDB = async () => {
       socketTimeoutMS: 45000,
       maxPoolSize: 10,
       minPoolSize: 5,
+      connectTimeoutMS: 10000,
+      retryWrites: true,
+      retryReads: true,
     });
     console.log('Connected to MongoDB');
+    cachedDb = conn;
+    return conn;
   } catch (err) {
     console.error('MongoDB connection error:', err);
-    process.exit(1);
+    throw err;
   }
 };
 
-// Connect to MongoDB
-connectDB();
+// Connect to MongoDB before handling any requests
+connectDB().catch(err => {
+  console.error('Failed to connect to MongoDB:', err);
+});
 
 // Optimize session settings for serverless
 App.use(session({
@@ -67,12 +80,14 @@ App.use(session({
   name: 'sessionId' // Custom session name
 }));
 
-// App.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).render('error', { 
-//     message: 'Something went wrong!',
-//   });
-// });
+// Add error handling middleware
+App.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).render('error', { 
+    message: 'Something went wrong!',
+  });
+});
+
 App.use((req, res, next) => {
   res.locals.user = req.user;
   next();
