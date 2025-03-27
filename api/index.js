@@ -33,13 +33,38 @@ App.use(flash());
 const PORT = process.env.PORT || 3000;
 App.use(express.static(path.join(__dirname, '../public')));
 
+// MongoDB Connection with optimized settings for serverless
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      maxPoolSize: 10,
+      minPoolSize: 5,
+    });
+    console.log('Connected to MongoDB');
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+  }
+};
+
+// Connect to MongoDB
+connectDB();
+
+// Optimize session settings for serverless
 App.use(session({
   secret: process.env.SESSION_SECRET || "TOPSECRET",
   resave: false,
   saveUninitialized: true,
   cookie: { 
-    maxAge: 1000 * 60 * 60 
-  }
+    maxAge: 1000 * 60 * 60,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax'
+  },
+  name: 'sessionId' // Custom session name
 }));
 
 // App.use((err, req, res, next) => {
@@ -48,11 +73,6 @@ App.use(session({
 //     message: 'Something went wrong!',
 //   });
 // });
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
- 
-
 App.use((req, res, next) => {
   res.locals.user = req.user;
   next();
