@@ -7,7 +7,7 @@ import Admin from "../models/adminModel.js";
 import LHMenuNonVeg from "../models/lhmenunonvegModel.js";
 import LHMenuSpecial from "../models/lhmenuspecialModel.js";
 import serverless from "serverless-http";
-
+import jsPDF from "jspdf";
 import MHMenuVeg from "../models/mhmenuvegModel.js";
 import MHMenuNonVeg from "../models/mhmenunonvegModel.js";
 
@@ -50,6 +50,8 @@ App.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
+
+
 
 App.use(passport.initialize());
 App.use(passport.session());
@@ -130,16 +132,33 @@ App.get("/admin/login", (req, res) => {
 
 App.get("/admin/dashboard", async (req, res) => {
   if (req.isAuthenticated()) {
-    const loggedInAdmin = req.user;
-    res.render("admin/dashboard", {
-      admin: loggedInAdmin,
-     
-      successMessage: req.flash("success"),
-      errorMessage: req.flash("error"),
-    });
+    try {
+      const results = await MHMenuVeg.find();
+      const results1 = await MHMenuNonVeg.find();
+      const results2 = await MHMenuSpecial.find();
+      const results3 = await LHMenuVeg.find();
+      const results4 = await LHMenuNonVeg.find();
+      const results5 = await LHMenuSpecial.find();
 
-    // Set formmodel based on user's hostel and mess type
+      const loggedInAdmin = req.user; // Ensure req.user contains the admin object
 
+      res.render("admin/dashboard", {
+        admin: loggedInAdmin, // Pass the admin object to the template
+        results,
+        results1,
+        results2,
+        results3,
+        results4,
+        results5,
+        combinedResults: [],
+        successMessage: req.flash("success"),
+        errorMessage: req.flash("error"),
+      });
+    } catch (error) {
+      console.error("Error fetching data for admin dashboard:", error);
+      req.flash("error", "Error loading dashboard data.");
+      res.redirect("/admin/login");
+    }
   } else {
     res.redirect("/admin/login");
   }
@@ -191,11 +210,13 @@ var mt = "none";
 var formmodel = "none";
 var dbcollection = "none";
 
+
 App.get("/dashboard", async (req, res) => {
   if (req.isAuthenticated()) {
     const loggedInUser = req.user;
 
     // Set formmodel based on user's hostel and mess type
+    let formmodel;
     if (req.user.hostelType === "Mens") {
       if (req.user.messType === "Veg") {
         formmodel = MHMenuVeg;
@@ -216,7 +237,7 @@ App.get("/dashboard", async (req, res) => {
 
     if (!formmodel) {
       req.flash("error", "Invalid form model.");
-      return res.redirect("/dashboard");
+      return res.redirect("/login"); // Redirect to login or an error page
     }
 
     try {
@@ -228,6 +249,7 @@ App.get("/dashboard", async (req, res) => {
       res.render("dashboard", {
         user: loggedInUser,
         results,
+        // Always pass an empty array if no search has been performed
         successMessage: req.flash("success"),
         errorMessage: req.flash("error"),
       });
@@ -240,7 +262,18 @@ App.get("/dashboard", async (req, res) => {
     res.redirect("/login");
   }
 });
-
+App.get("/delete", async (req, res) => {
+  try {
+    const filter = { submitted_by: req.user.name };
+    await formmodel.deleteOne(filter);
+    req.flash("success", "Suggestion deleted successfully!");
+    res.redirect("/dashboard");
+  } catch (error) {
+    console.error("Error deleting suggestion:", error);
+    req.flash("error", "Error deleting suggestion.");
+    res.redirect("/dashboard");
+  }
+});
 App.post("/suggestion", async (req, res) => {
   try {
     if (formmodel === "none") {
@@ -285,6 +318,38 @@ passport.use(
     }
   )
 );
+
+App.get("/search", async (req, res) => {
+  try {
+    const { name } = req.query; // Get the student's name from the query string
+
+    if (!name) {
+      return res.status(400).json({ error: "Name is required for search." });
+    }
+
+    // Search across multiple collections using the 'submitted_by' field
+    const results = await Promise.all([
+      MHMenuVeg.find({ submitted_by: { $regex: name, $options: "i" } }),
+      MHMenuNonVeg.find({ submitted_by: { $regex: name, $options: "i" } }),
+      MHMenuSpecial.find({ submitted_by: { $regex: name, $options: "i" } }),
+      LHMenuVeg.find({ submitted_by: { $regex: name, $options: "i" } }),
+      LHMenuNonVeg.find({ submitted_by: { $regex: name, $options: "i" } }),
+      LHMenuSpecial.find({ submitted_by: { $regex: name, $options: "i" } }),
+    ]);
+
+    // Combine results from all collections
+    const combinedResults = results.flat();
+
+    res.json(combinedResults);
+  } catch (error) {
+    console.error("Error searching for student:", error);
+    res.status(500).json({ error: "An error occurred while searching for the student." });
+  }
+});
+
+
+
+
 
 passport.serializeUser((user, cb) => {
   cb(null, { id: user.id, type: user instanceof Admin ? "admin" : "user" });

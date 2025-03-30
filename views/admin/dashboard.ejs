@@ -10,18 +10,35 @@
     <meta name="author" content="" />
     <title>MessMate</title>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
     <!-- Bootstrap icons-->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css" />
   </head>
   <body>
     <!-- Responsive navbar-->
@@ -42,7 +59,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/admin/logout"
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="/admin/logout"
                 >Logout</a
               >
             </li>
@@ -65,18 +85,13 @@
       </div>
     </header>
     <!-- Features section-->
-    <section class="py-5 border-bottom" id="features">
+    <section class="py-3 border-bottom" id="features">
       <div class="container px-5 my-1">
         <% if (successMessage.length > 0) { %>
-          <div class="alert alert-success">
-              <%= successMessage %>
-          </div>
-      <% } %>
-      <% if (errorMessage.length > 0) { %>
-          <div class="alert alert-danger">
-              <%= errorMessage %>
-          </div>
-      <% } %>  
+        <div class="alert alert-success"><%= successMessage %></div>
+        <% } %> <% if (errorMessage.length > 0) { %>
+        <div class="alert alert-danger"><%= errorMessage %></div>
+        <% } %>
         <h3>My Profile</h3>
         <hr />
         <table class="table table-bordered">
@@ -88,16 +103,487 @@
           <tbody>
             <tr>
               <td name="hosteltype"><%= admin.post %></td>
-            
             </tr>
           </tbody>
         </table>
       </div>
     </section>
- 
 
-  
-   
+    <section class="bg-light py-2 border-bottom">
+      <div class="container px-5 my-2">
+        <h3>View Suggestions</h3>
+        <hr />
+        <div class="container my-3">
+          <h5>Search for a Student</h5>
+          <hr />
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              id="searchInput"
+              class="form-control"
+              placeholder="Enter student name"
+              aria-label="Search"
+            />
+            <button class="btn btn-primary" id="searchButton">Search</button>
+          </div>
+        </div>
+
+        <div class="container">
+          <table class="table table-bordered" id="resultsTable">
+            <thead>
+              <tr>
+                <th>Student Name</th>
+                <th>Mess</th>
+                <th>Breakfast</th>
+                <th>Lunch</th>
+                <th>Snacks</th>
+                <th>Dinner</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Results will be dynamically added here -->
+            </tbody>
+          </table>
+          <h5>Mess-wise data</h5>
+          <hr />
+        </div>
+
+        <script>
+          document
+            .getElementById("searchButton")
+            .addEventListener("click", async () => {
+              const searchInput = document
+                .getElementById("searchInput")
+                .value.trim();
+
+              if (!searchInput) {
+                alert("Please enter a student's name to search.");
+                return;
+              }
+
+              try {
+                // Fetch search results from the backend
+                const response = await fetch(
+                  `/search?name=${encodeURIComponent(searchInput)}`
+                );
+                const results = await response.json();
+
+                if (response.ok) {
+                  // Populate the results table
+                  const resultsTable = document
+                    .getElementById("resultsTable")
+                    .querySelector("tbody");
+                  resultsTable.innerHTML = ""; // Clear previous results
+
+                  if (results.length > 0) {
+                    results.forEach((result) => {
+                      const row = `
+            <tr>
+              <td>${result.submitted_by}</td>
+              <td>${result.mess}</td>
+              <td>${result.breakfast}</td>
+              <td>${result.lunch}</td>
+              <td>${result.snacks}</td>
+              <td>${result.dinner}</td>
+            </tr>
+          `;
+                      resultsTable.innerHTML += row;
+                    });
+                  } else {
+                    resultsTable.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center">No results found for "${searchInput}".</td>
+          </tr>
+        `;
+                  }
+                } else {
+                  alert(results.error || "An error occurred while searching.");
+                }
+              } catch (error) {
+                console.error("Error fetching search results:", error);
+                alert(
+                  "An error occurred while searching. Please try again later."
+                );
+              }
+            });
+        </script>
+
+        <p>
+          <button
+            class="btn btn-outline-dark"
+            type="button"
+            style="width: 9rem"
+            data-toggle="collapse"
+            data-target="#mhmenuveg"
+            aria-expanded="false"
+            aria-controls="mhmenuveg"
+          >
+            MH Veg
+          </button>
+          <button
+            class="btn btn-outline-dark"
+            type="button"
+            style="width: 9rem"
+            data-toggle="collapse"
+            data-target="#mhmenunonveg"
+            aria-expanded="false"
+            aria-controls="mhmenunonveg"
+          >
+            MH Non Veg
+          </button>
+          <button
+            class="btn btn-outline-dark"
+            type="button"
+            style="width: 9rem"
+            data-toggle="collapse"
+            data-target="#mhmenuspecial"
+            aria-expanded="false"
+            aria-controls="mhmenuspecial"
+          >
+            MH Special
+          </button>
+          <button
+            class="btn btn-outline-dark"
+            type="button"
+            style="width: 9rem"
+            data-toggle="collapse"
+            data-target="#lhmenuveg"
+            aria-expanded="false"
+            aria-controls="lhmenuveg"
+          >
+            LH Veg
+          </button>
+          <button
+            class="btn btn-outline-dark"
+            type="button"
+            style="width: 9rem"
+            data-toggle="collapse"
+            data-target="#lhmenunonveg"
+            aria-expanded="false"
+            aria-controls="lhmenunonveg"
+          >
+            LH Non Veg
+          </button>
+          <button
+            class="btn btn-outline-dark"
+            type="button"
+            style="width: 9rem"
+            data-toggle="collapse"
+            data-target="#lhmenuspecial"
+            aria-expanded="false"
+            aria-controls="lhmenuspecial"
+          >
+            LH Special
+          </button>
+        </p>
+        <div id="accordion">
+          <!-- Collapsible Sections -->
+          <div class="collapse" id="mhmenuveg" data-parent="#accordion">
+            <div class="card card-body">
+              <% if (results.length > 0) { %>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <td colspan="6">MH Veg</td>
+                    <td>
+                      <button
+                        class="btn btn-primary mb-3"
+                        onclick="exportToPDF('MH Veg', <%= JSON.stringify(results).replace(/'/g, '\\\'') %>)"
+                      >
+                        Export Suggestions
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>Submitted By</th>
+                    <th>Mess</th>
+                    <th>Breakfast</th>
+                    <th>Lunch</th>
+                    <th>Snacks</th>
+                    <th>Dinner</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% results.forEach(suggestion => { %>
+                  <tr>
+                    <td><%= suggestion.submitted_by %></td>
+                    <td><%= suggestion.mess %></td>
+                    <td><%= suggestion.breakfast %></td>
+                    <td><%= suggestion.lunch %></td>
+                    <td><%= suggestion.snacks %></td>
+                    <td><%= suggestion.dinner %></td>
+                    <td>
+                      <button type="button" class="btn btn-outline-success">
+                        Accept
+                      </button>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+              <% } else { %>
+              <p>No suggestions submitted yet.</p>
+              <% } %>
+            </div>
+          </div>
+
+          <!-- Repeat for other collapsible sections -->
+          <div class="collapse" id="mhmenunonveg" data-parent="#accordion">
+            <div class="card card-body">
+              <% if (results1.length > 0) { %>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <td colspan="6">MH Non Veg</td>
+                    <td>
+                      <button
+                        class="btn btn-primary mb-3"
+                        onclick="exportToPDF('MH Non Veg', <%= JSON.stringify(results1).replace(/'/g, '\\\'') %>)"
+                      >
+                        Export Suggestions
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>Submitted By</th>
+                    <th>Mess</th>
+                    <th>Breakfast</th>
+                    <th>Lunch</th>
+                    <th>Snacks</th>
+                    <th>Dinner</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% results1.forEach(suggestion => { %>
+                  <tr>
+                    <td><%= suggestion.submitted_by %></td>
+                    <td><%= suggestion.mess %></td>
+                    <td><%= suggestion.breakfast %></td>
+                    <td><%= suggestion.lunch %></td>
+                    <td><%= suggestion.snacks %></td>
+                    <td><%= suggestion.dinner %></td>
+                    <td>
+                      <button type="button" class="btn btn-outline-success">
+                        Accept
+                      </button>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+              <% } else { %>
+              <p>No suggestions submitted yet.</p>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="collapse" id="mhmenuspecial" data-parent="#accordion">
+            <div class="card card-body">
+              <% if (results2.length > 0) { %>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <td colspan="6">MH Special</td>
+                    <td>
+                      <button
+                        class="btn btn-primary mb-3"
+                        onclick="exportToPDF('MH Special', <%= JSON.stringify(results2).replace(/'/g, '\\\'') %>)"
+                      >
+                        Export Suggestions
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>Submitted By</th>
+                    <th>Mess</th>
+                    <th>Breakfast</th>
+                    <th>Lunch</th>
+                    <th>Snacks</th>
+                    <th>Dinner</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% results2.forEach(suggestion => { %>
+                  <tr>
+                    <td><%= suggestion.submitted_by %></td>
+                    <td><%= suggestion.mess %></td>
+                    <td><%= suggestion.breakfast %></td>
+                    <td><%= suggestion.lunch %></td>
+                    <td><%= suggestion.snacks %></td>
+                    <td><%= suggestion.dinner %></td>
+                    <td>
+                      <button type="button" class="btn btn-outline-success">
+                        Accept
+                      </button>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+              <% } else { %>
+              <p>No suggestions submitted yet.</p>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="collapse" id="lhmenuveg" data-parent="#accordion">
+            <div class="card card-body">
+              <% if (results3.length > 0) { %>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <td colspan="6">LH Veg</td>
+                    <td>
+                      <button
+                        class="btn btn-primary mb-3"
+                        onclick="exportToPDF('LH Veg', <%= JSON.stringify(results3).replace(/'/g, '\\\'') %>)"
+                      >
+                        Export Suggestions
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Submitted By</th>
+                    <th>Mess</th>
+                    <th>Breakfast</th>
+                    <th>Lunch</th>
+                    <th>Snacks</th>
+                    <th>Dinner</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% results3.forEach(suggestion => { %>
+                  <tr>
+                    <td><%= suggestion.submitted_by %></td>
+                    <td><%= suggestion.mess %></td>
+                    <td><%= suggestion.breakfast %></td>
+                    <td><%= suggestion.lunch %></td>
+                    <td><%= suggestion.snacks %></td>
+                    <td><%= suggestion.dinner %></td>
+                    <td>
+                      <button type="button" class="btn btn-outline-success">
+                        Accept
+                      </button>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+              <% } else { %>
+              <p>No suggestions submitted yet.</p>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="collapse" id="lhmenunonveg" data-parent="#accordion">
+            <div class="card card-body">
+              <% if (results4.length > 0) { %>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <td colspan="6">LH Non Veg</td>
+                    <td>
+                      <button
+                        class="btn btn-primary mb-3"
+                        onclick="exportToPDF('LH Non Veg', <%= JSON.stringify(results4).replace(/'/g, '\\\'') %>)"
+                      >
+                        Export Suggestions
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Submitted By</th>
+                    <th>Mess</th>
+                    <th>Breakfast</th>
+                    <th>Lunch</th>
+                    <th>Snacks</th>
+                    <th>Dinner</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% results4.forEach(suggestion => { %>
+                  <tr>
+                    <td><%= suggestion.submitted_by %></td>
+                    <td><%= suggestion.mess %></td>
+                    <td><%= suggestion.breakfast %></td>
+                    <td><%= suggestion.lunch %></td>
+                    <td><%= suggestion.snacks %></td>
+                    <td><%= suggestion.dinner %></td>
+                    <td>
+                      <button type="button" class="btn btn-outline-success">
+                        Accept
+                      </button>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+              <% } else { %>
+              <p>No suggestions submitted yet.</p>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="collapse" id="lhmenuspecial" data-parent="#accordion">
+            <div class="card card-body">
+              <% if (results5.length > 0) { %>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <td colspan="6">LH Special</td>
+                    <td>
+                      <button
+                        class="btn btn-primary mb-3"
+                        onclick="exportToPDF('LH Special', <%= JSON.stringify(results5).replace(/'/g, '\\\'') %>)"
+                      >
+                        Export Suggestions
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Submitted By</th>
+                    <th>Mess</th>
+                    <th>Breakfast</th>
+                    <th>Lunch</th>
+                    <th>Snacks</th>
+                    <th>Dinner</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% results5.forEach(suggestion => { %>
+                  <tr>
+                    <td><%= suggestion.submitted_by %></td>
+                    <td><%= suggestion.mess %></td>
+                    <td><%= suggestion.breakfast %></td>
+                    <td><%= suggestion.lunch %></td>
+                    <td><%= suggestion.snacks %></td>
+                    <td><%= suggestion.dinner %></td>
+                    <td>
+                      <button type="button" class="btn btn-outline-success">
+                        Accept
+                      </button>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+              <% } else { %>
+              <p>No suggestions submitted yet.</p>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Footer-->
     <footer class="py-5 bg-dark">
@@ -110,11 +596,52 @@
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
+    <script src="../js/scripts.js"></script>
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
     <!-- * *                               SB Forms JS                               * *-->
     <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script>
+      function exportToPDF(messType, data) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Add title
+        doc.setFontSize(18);
+        doc.text(`Suggestions for ${messType}`, 10, 10);
+
+        // Add table headers
+        const headers = [
+          "Submitted By",
+          "Mess",
+          "Breakfast",
+          "Lunch",
+          "Snacks",
+          "Dinner",
+        ];
+        const rows = data.map((item) => [
+          item.submitted_by,
+          item.mess,
+          item.breakfast,
+          item.lunch,
+          item.snacks,
+          item.dinner,
+        ]);
+
+        // Add table to PDF
+        doc.autoTable({
+          head: [headers],
+          body: rows,
+          startY: 20,
+        });
+
+        // Save the PDF
+        doc.save(`${messType}_Suggestions.pdf`);
+      }
+    </script>
+
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
   </body>
 </html>

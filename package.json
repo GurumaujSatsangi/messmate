@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-"vercel-build": "echo 'No build needed for serverless deployment'"
-
+    "vercel-build": "echo 'No build needed for serverless deployment'"
   },
   "engines": {
     "node": "18.x"
@@ -21,6 +20,8 @@
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
+    "json2csv": "^6.0.0-alpha.2",
+    "jspdf": "^3.0.1",
     "mongodb": "^6.15.0",
     "mongoose": "^8.12.2",
     "nodemon": "^3.1.9",

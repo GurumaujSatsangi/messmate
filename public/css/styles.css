@@ -90,6 +90,7 @@
     scroll-behavior: smooth;
   }
 }
+/* Ensure the footer sticks to the bottom */
 
 body {
   margin: 0;
@@ -10850,3 +10851,4 @@ html, body {
   width: 4rem;
   font-size: 2rem;
 }
+
