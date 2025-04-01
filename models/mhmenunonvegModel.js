@@ -10,7 +10,8 @@ const mhmenunonvegSchema = new mongoose.Schema({
     breakfast: String,
     lunch: String,
     snacks: String,
-    dinner: String
+    dinner: String,    status:String
+
 
 });
 

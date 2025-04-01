@@ -85,7 +85,6 @@ App.post("/update", async (req, res) => {
 
   try {
     const filter = { email: req.user.email };
-    console.log(req.user.email);
     const update = {
       $set: {
         hostelType: req.body.hostelType,
@@ -344,6 +343,37 @@ App.get("/search", async (req, res) => {
   } catch (error) {
     console.error("Error searching for student:", error);
     res.status(500).json({ error: "An error occurred while searching for the student." });
+  }
+});
+
+
+App.get("/accept", async (req, res) => {
+  try {
+    if (formmodel === "none") {
+      req.flash("error", "Invalid form model.");
+      return res.redirect("/dashboard");
+    }
+
+    const filter = { submitted_by: req.user.name }; // Use the submitted_by field to find the suggestion
+    const update = {
+      $set: {
+        status: "Accepted", // Set the status field to "Accepted"
+      },
+    };
+
+    const result = await formmodel.updateOne(filter, update); // Use formmodel to update the document
+
+    if (result.modifiedCount > 0) {
+      req.flash("success", "Suggestion accepted successfully!");
+    } else {
+      req.flash("error", "No changes were made.");
+    }
+
+    res.redirect("/dashboard");
+  } catch (error) {
+    console.error("Error updating suggestion:", error);
+    req.flash("error", "Error accepting the suggestion.");
+    res.redirect("/dashboard");
   }
 });
 
