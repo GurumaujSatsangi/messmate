@@ -38,7 +38,7 @@
       crossorigin="anonymous"
     ></script>
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link rel="stylesheet" href="/css/styles.css" />
+    <link href="css/styles.css" rel="stylesheet" />
   </head>
   <body>
     <!-- Responsive navbar-->
@@ -59,9 +59,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/logout"
-                >Logout</a
-              >
+              <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
             </li>
           </ul>
         </div>
@@ -211,218 +209,211 @@
     <div class="container px-5 my-5">
       <h3>Submit a Suggestion</h3>
       <hr />
-      <% if (successMessage.length > 0) { %>
-      <div class="alert alert-success"><%= successMessage %></div>
-      <% } %> <% if (errorMessage.length > 0) { %>
-      <div class="alert alert-danger"><%= errorMessage %></div>
-      <% } %>
-      <form id="contactForm" method="POST" action="/suggestion">
-        <div class="mb-3">
-          <label class="form-label d-block">Meal Type</label>
-          <div class="form-check form-check-inline">
-            <input
-              class="form-check-input meal-checkbox"
-              id="breakfast"
-              type="checkbox"
-              name="mealType"
-            />
-            <label class="form-check-label" for="breakfast">Breakfast</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input
-              class="form-check-input meal-checkbox"
-              id="lunch"
-              type="checkbox"
-              name="mealType"
-            />
-            <label class="form-check-label" for="lunch">Lunch</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input
-              class="form-check-input meal-checkbox"
-              id="snacks"
-              type="checkbox"
-              name="mealType"
-            />
-            <label class="form-check-label" for="snacks">Snacks</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input
-              class="form-check-input meal-checkbox"
-              id="dinner"
-              type="checkbox"
-              name="mealType"
-            />
-            <label class="form-check-label" for="dinner">Dinner</label>
-          </div>
+      <div class="mb-3">
+        <label class="form-label d-block">Meal Type</label>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input meal-checkbox"
+            id="breakfast"
+            type="checkbox"
+            name="mealType"
+          />
+          <label class="form-check-label" for="breakfast">Breakfast</label>
         </div>
-
-        <div id="meal-fields">
-          <div class="meal-section" id="breakfast-section">
-            <div class="form-floating mb-3">
-              <textarea
-                class="form-control"
-                id="foodItemSuggestionBreakfast"
-                name="breakfast"
-                placeholder="Food Item Suggestion (Breakfast)"
-                style="height: 10rem"
-              ></textarea>
-              <label for="foodItemSuggestionBreakfast"
-                >Food Item Suggestion (Breakfast)</label
-              >
-            </div>
-            <div class="mb-3">
-              <label class="form-label d-block"
-                >Feasible for large production?</label
-              >
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="breakfastFeasible"
-                  value="yes"
-                />
-                <label class="form-check-label">Yes</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="breakfastFeasible"
-                  value="no"
-                />
-                <label class="form-check-label">No</label>
-              </div>
-            </div>
-          </div>
-
-          <div class="meal-section" id="lunch-section">
-            <div class="form-floating mb-3">
-              <textarea
-                class="form-control"
-                id="foodItemSuggestionLunch"
-                name="lunch"
-                placeholder="Food Item Suggestion (Lunch)"
-                style="height: 10rem"
-              ></textarea>
-              <label for="foodItemSuggestionLunch"
-                >Food Item Suggestion (Lunch)</label
-              >
-            </div>
-            <div class="mb-3">
-              <label class="form-label d-block"
-                >Feasible for large production?</label
-              >
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="lunchFeasible"
-                  value="yes"
-                />
-                <label class="form-check-label">Yes</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="lunchFeasible"
-                  value="no"
-                />
-                <label class="form-check-label">No</label>
-              </div>
-            </div>
-          </div>
-
-          <div class="meal-section" id="snacks-section">
-            <div class="form-floating mb-3">
-              <textarea
-                class="form-control"
-                name="snacks"
-                id="foodItemSuggestionSnacks"
-                placeholder="Food Item Suggestion (Snacks)"
-                style="height: 10rem"
-              ></textarea>
-              <label for="foodItemSuggestionSnacks"
-                >Food Item Suggestion (Snacks)</label
-              >
-            </div>
-            <div class="mb-3">
-              <label class="form-label d-block"
-                >Feasible for large production?</label
-              >
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="snacksFeasible"
-                  value="yes"
-                />
-                <label class="form-check-label">Yes</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="snacksFeasible"
-                  value="no"
-                />
-                <label class="form-check-label">No</label>
-              </div>
-            </div>
-          </div>
-
-          <div class="meal-section" id="dinner-section">
-            <div class="form-floating mb-3">
-              <textarea
-                class="form-control"
-                name="dinner"
-                id="foodItemSuggestionDinner"
-                placeholder="Food Item Suggestion (Dinner)"
-                style="height: 10rem"
-              ></textarea>
-              <label for="foodItemSuggestionDinner"
-                >Food Item Suggestion (Dinner)</label
-              >
-            </div>
-            <div class="mb-3">
-              <label class="form-label d-block"
-                >Feasible for large production?</label
-              >
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="dinnerFeasible"
-                  value="yes"
-                />
-                <label class="form-check-label">Yes</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  name="dinnerFeasible"
-                  value="no"
-                />
-                <label class="form-check-label">No</label>
-              </div>
-            </div>
-          </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input meal-checkbox"
+            id="lunch"
+            type="checkbox"
+            name="mealType"
+          />
+          <label class="form-check-label" for="lunch">Lunch</label>
         </div>
-        <center>
-          <div class="d-grid">
-            <button
-              class="btn btn-primary btn-lg"
-              style="width: 18rem"
-              id="submitButton"
-              type="submit"
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input meal-checkbox"
+            id="snacks"
+            type="checkbox"
+            name="mealType"
+          />
+          <label class="form-check-label" for="snacks">Snacks</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input meal-checkbox"
+            id="dinner"
+            type="checkbox"
+            name="mealType"
+          />
+          <label class="form-check-label" for="dinner">Dinner</label>
+        </div>
+      </div>
+
+      <div id="meal-fields">
+        <div class="meal-section" id="breakfast-section">
+          <div class="form-floating mb-3">
+            <textarea
+              class="form-control"
+              id="foodItemSuggestionBreakfast"
+              name="breakfast"
+              placeholder="Food Item Suggestion (Breakfast)"
+              style="height: 10rem"
+            ></textarea>
+            <label for="foodItemSuggestionBreakfast"
+              >Food Item Suggestion (Breakfast)</label
             >
-              Submit
-            </button>
           </div>
-        </center>
-      </form>
+          <div class="mb-3">
+            <label class="form-label d-block"
+              >Feasible for large production?</label
+            >
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="breakfastFeasible"
+                value="yes"
+              />
+              <label class="form-check-label">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="breakfastFeasible"
+                value="no"
+              />
+              <label class="form-check-label">No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="meal-section" id="lunch-section">
+          <div class="form-floating mb-3">
+            <textarea
+              class="form-control"
+              id="foodItemSuggestionLunch"
+              name="lunch"
+              placeholder="Food Item Suggestion (Lunch)"
+              style="height: 10rem"
+            ></textarea>
+            <label for="foodItemSuggestionLunch"
+              >Food Item Suggestion (Lunch)</label
+            >
+          </div>
+          <div class="mb-3">
+            <label class="form-label d-block"
+              >Feasible for large production?</label
+            >
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="lunchFeasible"
+                value="yes"
+              />
+              <label class="form-check-label">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="lunchFeasible"
+                value="no"
+              />
+              <label class="form-check-label">No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="meal-section" id="snacks-section">
+          <div class="form-floating mb-3">
+            <textarea
+              class="form-control"
+              name="snacks"
+              id="foodItemSuggestionSnacks"
+              placeholder="Food Item Suggestion (Snacks)"
+              style="height: 10rem"
+            ></textarea>
+            <label for="foodItemSuggestionSnacks"
+              >Food Item Suggestion (Snacks)</label
+            >
+          </div>
+          <div class="mb-3">
+            <label class="form-label d-block"
+              >Feasible for large production?</label
+            >
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="snacksFeasible"
+                value="yes"
+              />
+              <label class="form-check-label">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="snacksFeasible"
+                value="no"
+              />
+              <label class="form-check-label">No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="meal-section" id="dinner-section">
+          <div class="form-floating mb-3">
+            <textarea
+              class="form-control"
+              name="dinner"
+              id="foodItemSuggestionDinner"
+              placeholder="Food Item Suggestion (Dinner)"
+              style="height: 10rem"
+            ></textarea>
+            <label for="foodItemSuggestionDinner"
+              >Food Item Suggestion (Dinner)</label
+            >
+          </div>
+          <div class="mb-3">
+            <label class="form-label d-block"
+              >Feasible for large production?</label
+            >
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="dinnerFeasible"
+                value="yes"
+              />
+              <label class="form-check-label">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="dinnerFeasible"
+                value="no"
+              />
+              <label class="form-check-label">No</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <center>
+        <div class="d-grid">
+          <button
+            class="btn btn-primary btn-lg"
+            style="width: 18rem"
+            id="submitButton"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+      </center>
     </div>
     <section class="py-5 border-bottom" id="features">
       <div class="container px-5 my-1">

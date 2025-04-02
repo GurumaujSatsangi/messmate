@@ -18,42 +18,244 @@
     />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
+    <style>
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .navbar {
+        background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%) !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        background: linear-gradient(45deg, #fff, #e3f2fd);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      header {
+        background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%) !important;
+        position: relative;
+        overflow: hidden;
+      }
+
+      header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1" fill="rgba(255,255,255,0.05)"/></svg>');
+        opacity: 0.1;
+      }
+
+      .btn-outline-warning,
+      .btn-outline-light,
+      .btn-outline-info {
+        border-radius: 10px;
+        padding: 0.8rem 2rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-outline-warning:hover,
+      .btn-outline-light:hover,
+      .btn-outline-info:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-title {
+        color: #1a237e;
+        font-weight: 600;
+      }
+
+      .card-subtitle {
+        color: #666;
+      }
+
+      .card-link {
+        color: #1a237e;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .card-link:hover {
+        color: #0d47a1;
+        text-decoration: underline;
+      }
+
+      section {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        margin: 2rem 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      h2 {
+        color: #1a237e;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+      }
+
+      hr {
+        border: none;
+        height: 2px;
+        background: linear-gradient(90deg, #1a237e, #0d47a1);
+        margin: 1rem 0;
+      }
+
+      footer {
+        background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%) !important;
+        margin-top: auto;
+        padding: 1.5rem 0;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .card {
+        animation: fadeIn 0.8s ease-out;
+      }
+
+      .card:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .card:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      .card:nth-child(4) {
+        animation-delay: 0.6s;
+      }
+      .card:nth-child(5) {
+        animation-delay: 0.8s;
+      }
+      .card:nth-child(6) {
+        animation-delay: 1s;
+      }
+    </style>
   </head>
   <body>
-    <!-- Responsive navbar-->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark"></nav>
     <!-- Header-->
-    <header class="bg-dark py-5">
+    <header class="py-3">
       <div class="container px-5">
         <div class="row gx-5 justify-content-center">
           <div class="col-lg-6">
-            <div class="text-center my-5">
+            <div class="text-center my-3">
               <h1 class="display-5 fw-bolder text-white mb-2">MessMate</h1>
               <p class="lead text-white-50 mb-4">
                 VIT Vellore's Mess Menu Formation System
               </p>
-              <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                <a
-                  class="btn btn-outline-warning btn-lg px-4 me-sm-3"
-                  href="/login"
-                  >Login</a
-                >
-                <a class="btn btn-outline-light btn-lg px-4" href="/signup"
-                  >Signup</a
-                >
-                <a
-                  class="btn btn-outline-info btn-lg px-4 me-sm-3"
-                  href="/admin/login"
-                  >Admin Login</a
-                >
-              </div>
             </div>
           </div>
         </div>
       </div>
     </header>
-    <section class="bg-light py-2 border-bottom">
-      <div class="container px-5 my-5">
+    <!-- Responsive navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container px-5">
+        <a class="navbar-brand" href="#!">MessMate</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="btn btn-outline-warning me-2" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-outline-light me-2" href="/signup">Signup</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-outline-info" href="/admin/login"
+                >Admin Login</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <section class="py-5">
+      <div class="container px-5">
+        <!-- Image Carousel -->
+        <div
+          id="foodCarousel"
+          class="carousel slide mb-4"
+          data-bs-ride="carousel"
+          style="height: 200px; overflow: hidden"
+        >
+          <div class="carousel-indicators">
+            <button
+              type="button"
+              data-bs-target="#foodCarousel"
+              data-bs-slide-to="0"
+              class="active"
+              aria-current="true"
+              aria-label="Slide 1"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#foodCarousel"
+              data-bs-slide-to="1"
+              aria-label="Slide 2"
+            ></button>
+          </div>
+          <div class="carousel-inner h-100">
+            <div class="carousel-item active h-100">
+              <img
+                src="/assets/1.png"
+                class="d-block w-100 h-100 object-fit-cover"
+                alt="Healthy Food"
+              />
+            </div>
+            <div class="carousel-item h-100">
+              <img
+                src="/assets/2.png"
+                class="d-block w-100 h-100 object-fit-cover"
+                alt="Diverse Cuisine"
+              />
+            </div>
+          </div>
+        </div>
         <div class="text-center mb-5">
           <p align="justify">
             Welcome to MessMate, your one-stop platform for actively
@@ -62,15 +264,15 @@
             student experience. This system allows you to suggest, review, and
             contribute to the finalization of the weekly mess menu. Your inputs
             play a crucial role in ensuring that the food served aligns with the
-            preferences and dietary needs of the students. Let’s work together
+            preferences and dietary needs of the students. Let's work together
             to create a menu that is both delicious and wholesome!
           </p>
         </div>
       </div>
     </section>
 
-    <section class="bg-light py-2 border-bottom">
-      <div class="container px-5 my-5">
+    <section class="py-5">
+      <div class="container px-5">
         <div class="text-center mb-5">
           <h2>Guidelines for Suggesting a Menu</h2>
           <hr />
@@ -152,8 +354,8 @@
       </div>
     </section>
 
-    <section class="bg-light py-2 border-bottom">
-      <div class="container px-5 my-5">
+    <section class="py-5">
+      <div class="container px-5">
         <div class="text-center mb-5">
           <h2>Adminstration</h2>
           <hr />
@@ -247,7 +449,7 @@
     </section>
 
     <!-- Footer-->
-    <footer class="py-5 bg-dark">
+    <footer>
       <div class="container px-5">
         <p class="m-0 text-center text-white">
           Copyright &copy; MessMate. All Rights Reserved.

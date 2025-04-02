@@ -294,7 +294,6 @@
                       </button>
                     </td>
                   </tr>
-
                   <tr>
                     <th>Submitted By</th>
                     <th>Mess</th>
@@ -307,18 +306,23 @@
                 </thead>
                 <tbody>
                   <% results.forEach(suggestion => { %>
-                  <tr>
-                    <td><%= suggestion.submitted_by %></td>
-                    <td><%= suggestion.mess %></td>
-                    <td><%= suggestion.breakfast %></td>
-                    <td><%= suggestion.lunch %></td>
-                    <td><%= suggestion.snacks %></td>
-                    <td><%= suggestion.dinner %></td>
-                    <td>
-                      <a class="btn btn-primary" href="/accept" role="button">Link</a>
-
-                    </td>
-                  </tr>
+                    <tr>
+                      <td><%= suggestion.submitted_by %></td>
+                      <td><%= suggestion.mess %></td>
+                      <td><%= suggestion.breakfast %></td>
+                      <td><%= suggestion.lunch %></td>
+                      <td><%= suggestion.snacks %></td>
+                      <td><%= suggestion.dinner %></td>
+                      <td>
+                        <% if (suggestion.status === "Accepted") { %>
+                          <button class="btn btn-secondary" disabled>Already Accepted</button>
+                        <% } else { %>
+                          <a href="/accept?id=<%= suggestion._id %>&model=mhmenuveg" class="btn btn-outline-success">
+                            Accept
+                          </a>
+                        <% } %>
+                      </td>
+                    </tr>
                   <% }) %>
                 </tbody>
               </table>
@@ -345,7 +349,6 @@
                       </button>
                     </td>
                   </tr>
-
                   <tr>
                     <th>Submitted By</th>
                     <th>Mess</th>
@@ -358,19 +361,23 @@
                 </thead>
                 <tbody>
                   <% results1.forEach(suggestion => { %>
-                  <tr>
-                    <td><%= suggestion.submitted_by %></td>
-                    <td><%= suggestion.mess %></td>
-                    <td><%= suggestion.breakfast %></td>
-                    <td><%= suggestion.lunch %></td>
-                    <td><%= suggestion.snacks %></td>
-                    <td><%= suggestion.dinner %></td>
-                    <td>
-                      <button type="button" class="btn btn-outline-success">
-                        Accept
-                      </button>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td><%= suggestion.submitted_by %></td>
+                      <td><%= suggestion.mess %></td>
+                      <td><%= suggestion.breakfast %></td>
+                      <td><%= suggestion.lunch %></td>
+                      <td><%= suggestion.snacks %></td>
+                      <td><%= suggestion.dinner %></td>
+                      <td>
+                        <% if (suggestion.status === "Accepted") { %>
+                          <button class="btn btn-secondary" disabled>Already Accepted</button>
+                        <% } else { %>
+                          <a href="/accept?id=<%= suggestion._id %>&model=mhmenunonveg" class="btn btn-outline-success">
+                            Accept
+                          </a>
+                        <% } %>
+                      </td>
+                    </tr>
                   <% }) %>
                 </tbody>
               </table>
@@ -396,7 +403,6 @@
                       </button>
                     </td>
                   </tr>
-
                   <tr>
                     <th>Submitted By</th>
                     <th>Mess</th>
@@ -409,19 +415,23 @@
                 </thead>
                 <tbody>
                   <% results2.forEach(suggestion => { %>
-                  <tr>
-                    <td><%= suggestion.submitted_by %></td>
-                    <td><%= suggestion.mess %></td>
-                    <td><%= suggestion.breakfast %></td>
-                    <td><%= suggestion.lunch %></td>
-                    <td><%= suggestion.snacks %></td>
-                    <td><%= suggestion.dinner %></td>
-                    <td>
-                      <button type="button" class="btn btn-outline-success">
-                        Accept
-                      </button>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td><%= suggestion.submitted_by %></td>
+                      <td><%= suggestion.mess %></td>
+                      <td><%= suggestion.breakfast %></td>
+                      <td><%= suggestion.lunch %></td>
+                      <td><%= suggestion.snacks %></td>
+                      <td><%= suggestion.dinner %></td>
+                      <td>
+                        <% if (suggestion.status === "Accepted") { %>
+                          <button class="btn btn-secondary" disabled>Already Accepted</button>
+                        <% } else { %>
+                          <a href="/accept?id=<%= suggestion._id %>&model=mhmenuspecial" class="btn btn-outline-success">
+                            Accept
+                          </a>
+                        <% } %>
+                      </td>
+                    </tr>
                   <% }) %>
                 </tbody>
               </table>
@@ -459,19 +469,23 @@
                 </thead>
                 <tbody>
                   <% results3.forEach(suggestion => { %>
-                  <tr>
-                    <td><%= suggestion.submitted_by %></td>
-                    <td><%= suggestion.mess %></td>
-                    <td><%= suggestion.breakfast %></td>
-                    <td><%= suggestion.lunch %></td>
-                    <td><%= suggestion.snacks %></td>
-                    <td><%= suggestion.dinner %></td>
-                    <td>
-                      <button type="button" class="btn btn-outline-success">
-                        Accept
-                      </button>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td><%= suggestion.submitted_by %></td>
+                      <td><%= suggestion.mess %></td>
+                      <td><%= suggestion.breakfast %></td>
+                      <td><%= suggestion.lunch %></td>
+                      <td><%= suggestion.snacks %></td>
+                      <td><%= suggestion.dinner %></td>
+                      <td>
+                        <% if (suggestion.status === "Accepted") { %>
+                          <button class="btn btn-secondary" disabled>Already Accepted</button>
+                        <% } else { %>
+                          <a href="/accept?id=<%= suggestion._id %>&model=lhmenuveg" class="btn btn-outline-success">
+                            Accept
+                          </a>
+                        <% } %>
+                      </td>
+                    </tr>
                   <% }) %>
                 </tbody>
               </table>
@@ -509,19 +523,23 @@
                 </thead>
                 <tbody>
                   <% results4.forEach(suggestion => { %>
-                  <tr>
-                    <td><%= suggestion.submitted_by %></td>
-                    <td><%= suggestion.mess %></td>
-                    <td><%= suggestion.breakfast %></td>
-                    <td><%= suggestion.lunch %></td>
-                    <td><%= suggestion.snacks %></td>
-                    <td><%= suggestion.dinner %></td>
-                    <td>
-                      <button type="button" class="btn btn-outline-success">
-                        Accept
-                      </button>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td><%= suggestion.submitted_by %></td>
+                      <td><%= suggestion.mess %></td>
+                      <td><%= suggestion.breakfast %></td>
+                      <td><%= suggestion.lunch %></td>
+                      <td><%= suggestion.snacks %></td>
+                      <td><%= suggestion.dinner %></td>
+                      <td>
+                        <% if (suggestion.status === "Accepted") { %>
+                          <button class="btn btn-secondary" disabled>Already Accepted</button>
+                        <% } else { %>
+                          <a href="/accept?id=<%= suggestion._id %>&model=lhmenunonveg" class="btn btn-outline-success">
+                            Accept
+                          </a>
+                        <% } %>
+                      </td>
+                    </tr>
                   <% }) %>
                 </tbody>
               </table>
@@ -559,19 +577,23 @@
                 </thead>
                 <tbody>
                   <% results5.forEach(suggestion => { %>
-                  <tr>
-                    <td><%= suggestion.submitted_by %></td>
-                    <td><%= suggestion.mess %></td>
-                    <td><%= suggestion.breakfast %></td>
-                    <td><%= suggestion.lunch %></td>
-                    <td><%= suggestion.snacks %></td>
-                    <td><%= suggestion.dinner %></td>
-                    <td>
-                      <button type="button" href="/accept" class="btn btn-outline-success">
-                        Accept
-                      </button>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td><%= suggestion.submitted_by %></td>
+                      <td><%= suggestion.mess %></td>
+                      <td><%= suggestion.breakfast %></td>
+                      <td><%= suggestion.lunch %></td>
+                      <td><%= suggestion.snacks %></td>
+                      <td><%= suggestion.dinner %></td>
+                      <td>
+                        <% if (suggestion.status === "Accepted") { %>
+                          <button class="btn btn-secondary" disabled>Already Accepted</button>
+                        <% } else { %>
+                          <a href="/accept?id=<%= suggestion._id %>&model=lhmenuspecial" class="btn btn-outline-success">
+                            Accept
+                          </a>
+                        <% } %>
+                      </td>
+                    </tr>
                   <% }) %>
                 </tbody>
               </table>
@@ -580,6 +602,103 @@
               <% } %>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Planning Section -->
+    <section class="py-5 border-bottom">
+      <div class="container px-5 my-5">
+        <h3>Weekly Menu Planning</h3>
+        <hr />
+        
+        <!-- Weekly Menu Table -->
+        <div class="table-responsive">
+          <div class="text-end mb-3">
+            <button class="btn btn-primary" onclick="exportWeeklyMenuToPDF()">Download Weekly Menu</button>
+          </div>
+          <table class="table table-bordered" id="weeklyMenuTable">
+            <thead>
+              <tr>
+                <th>Day</th>
+                <th>Breakfast</th>
+                <th>Lunch</th>
+                <th>Snacks</th>
+                <th>Dinner</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].forEach(function(day) { %>
+                <tr>
+                  <td><%= day %></td>
+                  <td>
+                    <% acceptedSuggestions.forEach(suggestion => { %>
+                      <% if (suggestion.status === "Accepted" && suggestion.breakfast && suggestion.breakfast.trim()) { %>
+                        <div class="form-check">
+                          <input class="form-check-input menu-checkbox" type="checkbox" 
+                                 value="<%= suggestion.breakfast %>"
+                                 data-day="<%= day %>" data-meal="breakfast"
+                                 <%= weeklyMenu[day] && weeklyMenu[day].breakfast === suggestion.breakfast ? 'checked' : '' %>>
+                          <label class="form-check-label">
+                            <%= suggestion.breakfast %>
+                          </label>
+                        </div>
+                      <% } %>
+                    <% }) %>
+                  </td>
+                  <td>
+                    <% acceptedSuggestions.forEach(suggestion => { %>
+                      <% if (suggestion.status === "Accepted" && suggestion.lunch && suggestion.lunch.trim()) { %>
+                        <div class="form-check">
+                          <input class="form-check-input menu-checkbox" type="checkbox" 
+                                 value="<%= suggestion.lunch %>"
+                                 data-day="<%= day %>" data-meal="lunch"
+                                 <%= weeklyMenu[day] && weeklyMenu[day].lunch === suggestion.lunch ? 'checked' : '' %>>
+                          <label class="form-check-label">
+                            <%= suggestion.lunch %>
+                          </label>
+                        </div>
+                      <% } %>
+                    <% }) %>
+                  </td>
+                  <td>
+                    <% acceptedSuggestions.forEach(suggestion => { %>
+                      <% if (suggestion.status === "Accepted" && suggestion.snacks && suggestion.snacks.trim()) { %>
+                        <div class="form-check">
+                          <input class="form-check-input menu-checkbox" type="checkbox" 
+                                 value="<%= suggestion.snacks %>"
+                                 data-day="<%= day %>" data-meal="snacks"
+                                 <%= weeklyMenu[day] && weeklyMenu[day].snacks === suggestion.snacks ? 'checked' : '' %>>
+                          <label class="form-check-label">
+                            <%= suggestion.snacks %>
+                          </label>
+                        </div>
+                      <% } %>
+                    <% }) %>
+                  </td>
+                  <td>
+                    <% acceptedSuggestions.forEach(suggestion => { %>
+                      <% if (suggestion.status === "Accepted" && suggestion.dinner && suggestion.dinner.trim()) { %>
+                        <div class="form-check">
+                          <input class="form-check-input menu-checkbox" type="checkbox" 
+                                 value="<%= suggestion.dinner %>"
+                                 data-day="<%= day %>" data-meal="dinner"
+                                 <%= weeklyMenu[day] && weeklyMenu[day].dinner === suggestion.dinner ? 'checked' : '' %>>
+                          <label class="form-check-label">
+                            <%= suggestion.dinner %>
+                          </label>
+                        </div>
+                      <% } %>
+                    <% }) %>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="text-center mt-4">
+          <button class="btn btn-primary" id="saveMenu">Save Weekly Menu</button>
         </div>
       </div>
     </section>
@@ -642,5 +761,139 @@
     </script>
 
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    <script>
+      document.getElementById('saveMenu').addEventListener('click', async () => {
+        const weeklyMenu = {};
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        
+        days.forEach(day => {
+          weeklyMenu[day] = {
+            breakfast: '',
+            lunch: '',
+            snacks: '',
+            dinner: ''
+          };
+          
+          // Get all checked checkboxes for each meal type
+          ['breakfast', 'lunch', 'snacks', 'dinner'].forEach(mealType => {
+            const checkedBoxes = document.querySelectorAll(
+              `input[type="checkbox"][data-day="${day}"][data-meal="${mealType}"]:checked`
+            );
+            if (checkedBoxes.length > 0) {
+              weeklyMenu[day][mealType] = checkedBoxes[0].value;
+            }
+          });
+        });
+
+        try {
+          const response = await fetch('/admin/save-menu', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(weeklyMenu)
+          });
+
+          const result = await response.json();
+          if (result.success) {
+            alert('Weekly menu saved successfully!');
+          } else {
+            alert('Error saving weekly menu: ' + (result.error || 'Unknown error'));
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error saving weekly menu');
+        }
+      });
+
+      // Function to handle checkbox selection
+      document.querySelectorAll('.menu-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          if (this.checked) {
+            // Uncheck other checkboxes in the same meal and day
+            const day = this.dataset.day;
+            const meal = this.dataset.meal;
+            document.querySelectorAll(
+              `input[type="checkbox"][data-day="${day}"][data-meal="${meal}"]`
+            ).forEach(cb => {
+              if (cb !== this) {
+                cb.checked = false;
+              }
+            });
+          }
+        });
+      });
+
+      // Initialize checkboxes based on weeklyMenu data
+      const weeklyMenu = <%- JSON.stringify(weeklyMenu) %>;
+      Object.entries(weeklyMenu).forEach(([day, meals]) => {
+        Object.entries(meals).forEach(([mealType, selectedItem]) => {
+          if (selectedItem) {
+            const checkbox = document.querySelector(
+              `input[type="checkbox"][data-day="${day}"][data-meal="${mealType}"][value="${selectedItem}"]`
+            );
+            if (checkbox) {
+              checkbox.checked = true;
+            }
+          }
+        });
+      });
+    </script>
+
+    <script>
+      function exportWeeklyMenuToPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Add title
+        doc.setFontSize(18);
+        doc.text('Weekly Menu Plan', 10, 10);
+
+        // Get the table data
+        const table = document.getElementById('weeklyMenuTable');
+        
+        // Convert table to array format for jspdf-autotable
+        const tableData = [];
+        const rows = table.getElementsByTagName('tr');
+        
+        for (let i = 1; i < rows.length; i++) { // Start from 1 to skip header
+          const cells = rows[i].getElementsByTagName('td');
+          const day = cells[0].textContent;
+          
+          // Get selected items for each meal type
+          const getSelectedMeal = (cell) => {
+            const checkedBoxes = cell.querySelectorAll('input[type="checkbox"]:checked');
+            return Array.from(checkedBoxes).map(cb => cb.value).join(', ') || 'Not selected';
+          };
+
+          tableData.push([
+            day,
+            getSelectedMeal(cells[1]), // Breakfast
+            getSelectedMeal(cells[2]), // Lunch
+            getSelectedMeal(cells[3]), // Snacks
+            getSelectedMeal(cells[4])  // Dinner
+          ]);
+        }
+
+        // Add table to PDF
+        doc.autoTable({
+          head: [['Day', 'Breakfast', 'Lunch', 'Snacks', 'Dinner']],
+          body: tableData,
+          startY: 20,
+          theme: 'grid',
+          styles: { fontSize: 8 },
+          columnStyles: {
+            0: { cellWidth: 25 },
+            1: { cellWidth: 40 },
+            2: { cellWidth: 40 },
+            3: { cellWidth: 40 },
+            4: { cellWidth: 40 }
+          }
+        });
+
+        // Save the PDF
+        doc.save('Weekly_Menu_Plan.pdf');
+      }
+    </script>
   </body>
 </html>

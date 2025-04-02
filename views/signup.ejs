@@ -1,8 +1,3 @@
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -17,162 +12,211 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <style>
+            body {
+                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .navbar {
+                background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%) !important;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .navbar-brand {
+                font-weight: 700;
+                font-size: 1.5rem;
+                background: linear-gradient(45deg, #fff, #e3f2fd);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .form-container {
+                background: rgba(255, 255, 255, 0.95);
+                border-radius: 15px;
+                padding: 2rem;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(10px);
+                transform: translateY(0);
+                transition: transform 0.3s ease;
+                margin: 2rem auto;
+                max-width: 600px;
+            }
+
+            .form-container:hover {
+                transform: translateY(-5px);
+            }
+
+            .form-floating > .form-control {
+                border-radius: 10px;
+                border: 2px solid #e0e0e0;
+                padding: 1rem 0.75rem;
+                transition: all 0.3s ease;
+            }
+
+            .form-floating > .form-control:focus {
+                border-color: #1a237e;
+                box-shadow: 0 0 0 0.2rem rgba(26, 35, 126, 0.25);
+            }
+
+            .form-floating > label {
+                padding: 1rem 0.75rem;
+            }
+
+            .btn-primary {
+                background: linear-gradient(45deg, #1a237e, #0d47a1);
+                border: none;
+                border-radius: 10px;
+                padding: 0.8rem 2rem;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+                transition: all 0.3s ease;
+            }
+
+            .btn-primary:hover {
+                background: linear-gradient(45deg, #0d47a1, #1a237e);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(26, 35, 126, 0.3);
+            }
+
+            .alert-success, .alert-danger {
+                border-radius: 10px;
+                padding: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .alert-success {
+                background: rgba(40, 167, 69, 0.1);
+                border: 1px solid rgba(40, 167, 69, 0.2);
+                color: #28a745;
+            }
+
+            .alert-danger {
+                background: rgba(220, 53, 69, 0.1);
+                border: 1px solid rgba(220, 53, 69, 0.2);
+                color: #dc3545;
+            }
+
+            footer {
+                background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%) !important;
+                margin-top: auto;
+                padding: 1.5rem 0;
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            .form-container {
+                animation: fadeIn 0.8s ease-out;
+            }
+
+            select.form-control {
+                border-radius: 10px;
+                border: 2px solid #e0e0e0;
+                padding: 1rem 0.75rem;
+                transition: all 0.3s ease;
+            }
+
+            select.form-control:focus {
+                border-color: #1a237e;
+                box-shadow: 0 0 0 0.2rem rgba(26, 35, 126, 0.25);
+            }
+        </style>
     </head>
     <body>
         <!-- Responsive navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container px-5">
                 <a class="navbar-brand" href="#!">MessMate</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="/home">Home</a></li>
-                        
                     </ul>
                 </div>
             </div>
         </nav>
-     
-     
+        <!-- Header-->
         <div class="container px-5">
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-6">
                     <div class="text-center my-5">
+                        <div class="form-container">
+                            <form id="contactForm" action="/signup" method="POST">
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="name" name="name" type="text" placeholder="Name" required />
+                                    <label for="name">Name</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="email" name="email" type="email" placeholder="Email Address" required />
+                                    <label for="email">Email Address</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select class="form-control" id="hostelType" name="hostelType" required>
+                                        <option value="">Select Hostel Type</option>
+                                        <option value="Mens">Mens</option>
+                                        <option value="Ladies">Ladies</option>
+                                    </select>
+                                    <label for="hostelType">Hostel Type</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select class="form-control" id="hostel" name="hostel" required>
+                                        <option value="">Select Hostel</option>
+                                    </select>
+                                    <label for="hostel">Hostel</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select class="form-control" id="messType" name="messType" required>
+                                        <option value="">Select Mess Type</option>
+                                        <option value="Veg">Veg</option>
+                                        <option value="NonVeg">Non-Veg</option>
+                                        <option value="Special">Special</option>
+                                    </select>
+                                    <label for="messType">Mess Type</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select class="form-control" id="mess" name="mess" required>
+                                        <option value="">Select Mess</option>
+                                    </select>
+                                    <label for="mess">Mess</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" id="password" name="password" type="password" placeholder="Password" required />
+                                    <label for="password">Password</label>
+                                </div>
                         
-                        <div class="container px-5 my-5">
-                            <div class="container mt-5">
-                                <form id="contactForm" method="POST" action="/signup">
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="name" name="name" type="text" placeholder="Name" required />
-                                        <label for="name">Name</label>
+                                <% if (successMessage.length > 0) { %>
+                                    <div class="alert alert-success">
+                                        <%= successMessage %>
                                     </div>
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="emailAddress" name="email" type="email" placeholder="Email Address" required />
-                                        <label for="emailAddress">Email Address</label>
+                                <% } %>
+                                <% if (errorMessage.length > 0) { %>
+                                    <div class="alert alert-danger">
+                                        <%= errorMessage %>
                                     </div>
-                                    
-                                    <!-- Hostel Type Dropdown -->
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" id="hostelType" name="hostelType" required>
-                                            <option value="">Select Hostel Type</option>
-                                            <option value="Mens">Men's Hostel</option>
-                                            <option value="Ladies">Ladies Hostel</option>
-                                        </select>
-                                        <label for="hostelType">Hostel Type</label>
-                                    </div>
+                                <% } %>  
                         
-                                    <!-- Hostel Dropdown (Conditional) -->
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" id="hostel" name="hostel" required>
-                                            <option value="">Select Hostel</option>
-                                        </select>
-                                        <label for="hostel">Block</label>
-                                    </div>
-                        
-                                    <!-- Mess Type Dropdown -->
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" id="messType" name="messType" required>
-                                            <option value="">Select Mess Type</option>
-                                            <option value="Veg">Veg</option>
-                                            <option value="NonVeg">Non-Veg</option>
-                                            <option value="Special">Special</option>
-                                        </select>
-                                        <label for="messType">Mess Type</label>
-                                    </div>
-                        
-                                    <!-- Mess Dropdown (Conditional) -->
-                                    <div class="form-floating mb-3">
-                                        <select class="form-select" id="mess" name="mess" required>
-                                            <option value="">Select Mess</option>
-                                        </select>
-                                        <label for="mess">Mess</label>
-                                    </div>
-                        
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="password" name="password" type="password" placeholder="Password" required />
-                                        <label for="password">Password</label>
-                                    </div>
-                        
-                                    <% if (successMessage.length > 0) { %>
-                                        <div class="alert alert-success">
-                                            <%= successMessage %>
-                                        </div>
-                                    <% } %>
-                                    <% if (errorMessage.length > 0) { %>
-                                        <div class="alert alert-danger">
-                                            <%= errorMessage %>
-                                        </div>
-                                    <% } %>  
-                        
-                                    <div class="d-grid">
-                                        <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Signup</button>
-                                    </div>
-                                </form>
-                            </div>
-                        
-                            <script>
-                                document.addEventListener("DOMContentLoaded", function () {
-                                    const hostelType = document.getElementById("hostelType");
-                                    const hostel = document.getElementById("hostel");
-                                    const messType = document.getElementById("messType");
-                                    const mess = document.getElementById("mess");
-                        
-                                    const hostels = {
-                                        Mens: [
-                                            "MH A", "MH B", "MH B ANNEX", "MH C", "MH D", "MH D ANNEX", "MH E", "MH F",
-                                            "MH G", "MH H", "MH I", "MH J", "MH J ANNEX", "MH K", "MH L", "MH M", "MH M ANNEX",
-                                            "MH N", "MH N ANNEX", "MH P", "MH Q", "MH R", "MH S", "MH T"
-                                        ],
-                                        Ladies: [
-                                            "LH A", "LH B", "LH C", "LH D", "LH E", "LH F", "LH G", "LH H", "LH J", "RGT H", "LH GH (Annex)"
-                                        ]
-                                    };
-                        
-                                    const messOptions = {
-                                        Veg: ["Zenith Veg", "SRCC Veg", "Darling Veg"],
-                                        NonVeg: ["Zenith Non-Veg", "SRCC Non-Veg", "Darling Non-Veg"],
-                                        Special: ["Zenith Special", "SRCC Special", "Darling Special"]
-                                    };
-                        
-                                    // Update hostel dropdown based on hostel type selection
-                                    hostelType.addEventListener("change", function () {
-                                        hostel.innerHTML = '<option value="">Select Hostel</option>'; // Reset options
-                        
-                                        if (hostelType.value && hostels[hostelType.value]) {
-                                            hostels[hostelType.value].forEach(hostelName => {
-                                                const option = document.createElement("option");
-                                                option.value = hostelName;
-                                                option.textContent = hostelName;
-                                                hostel.appendChild(option);
-                                            });
-                                        }
-                                    });
-                        
-                                    // Update mess dropdown based on mess type selection
-                                    messType.addEventListener("change", function () {
-                                        mess.innerHTML = '<option value="">Select Mess</option>'; // Reset options
-                        
-                                        if (messType.value && messOptions[messType.value]) {
-                                            messOptions[messType.value].forEach(messName => {
-                                                const option = document.createElement("option");
-                                                option.value = messName;
-                                                option.textContent = messName;
-                                                mess.appendChild(option);
-                                            });
-                                        }
-                                    });
-                                });
-                            </script>
+                                <div class="d-grid">
+                                    <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Signup</button>
+                                </div>
+                            </form>
                         </div>
-                        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Footer-->
-        <footer class="py-5 bg-dark">
-            <div class="container px-5"><p class="m-0 text-center text-white">Copyright &copy; MessMate. All Rights Reserved.</p></div>
+        <footer>
+            <div class="container px-5">
+                <p class="m-0 text-center text-white">
+                    Copyright &copy; MessMate. All Rights Reserved.
+                </p>
+            </div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -183,6 +227,57 @@
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const hostelType = document.getElementById("hostelType");
+                const hostel = document.getElementById("hostel");
+                const messType = document.getElementById("messType");
+                const mess = document.getElementById("mess");
+        
+                const hostels = {
+                    Mens: [
+                        "MH A", "MH B", "MH B ANNEX", "MH C", "MH D", "MH D ANNEX", "MH E", "MH F",
+                        "MH G", "MH H", "MH I", "MH J", "MH J ANNEX", "MH K", "MH L", "MH M", "MH M ANNEX",
+                        "MH N", "MH N ANNEX", "MH P", "MH Q", "MH R", "MH S", "MH T"
+                    ],
+                    Ladies: [
+                        "LH A", "LH B", "LH C", "LH D", "LH E", "LH F", "LH G", "LH H", "LH J", "RGT H", "LH GH (Annex)"
+                    ]
+                };
+        
+                const messOptions = {
+                    Veg: ["Zenith Veg", "SRCC Veg", "Darling Veg"],
+                    NonVeg: ["Zenith Non-Veg", "SRCC Non-Veg", "Darling Non-Veg"],
+                    Special: ["Zenith Special", "SRCC Special", "Darling Special"]
+                };
+        
+                hostelType.addEventListener("change", function () {
+                    const selectedType = this.value;
+                    hostel.innerHTML = '<option value="">Select Hostel</option>';
+                    if (selectedType && hostels[selectedType]) {
+                        hostels[selectedType].forEach(hostelName => {
+                            const option = document.createElement("option");
+                            option.value = hostelName;
+                            option.textContent = hostelName;
+                            hostel.appendChild(option);
+                        });
+                    }
+                });
+        
+                messType.addEventListener("change", function () {
+                    const selectedType = this.value;
+                    mess.innerHTML = '<option value="">Select Mess</option>';
+                    if (selectedType && messOptions[selectedType]) {
+                        messOptions[selectedType].forEach(messName => {
+                            const option = document.createElement("option");
+                            option.value = messName;
+                            option.textContent = messName;
+                            mess.appendChild(option);
+                        });
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
 

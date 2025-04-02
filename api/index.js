@@ -23,6 +23,7 @@ dotenv.config();
 
 import { fileURLToPath } from "url";
 import flash from "connect-flash";
+import Menu from "../models/menuModel.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -130,48 +131,121 @@ App.get("/admin/login", (req, res) => {
 });
 
 App.get("/admin/dashboard", async (req, res) => {
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() && req.user.isAdmin) {
     try {
-      const results = await MHMenuVeg.find();
-      const results1 = await MHMenuNonVeg.find();
-      const results2 = await MHMenuSpecial.find();
-      const results3 = await LHMenuVeg.find();
-      const results4 = await LHMenuNonVeg.find();
-      const results5 = await LHMenuSpecial.find();
+      // Fetch all suggestions from all models
+      const acceptedSuggestions = [];
+      
+      // Fetch from MH Veg
+      const mhVegAccepted = await MHMenuVeg.find({ status: "Accepted" });
+      acceptedSuggestions.push(...mhVegAccepted);
+      
+      // Fetch from MH Non Veg
+      const mhNonVegAccepted = await MHMenuNonVeg.find({ status: "Accepted" });
+      acceptedSuggestions.push(...mhNonVegAccepted);
+      
+      // Fetch from MH Special
+      const mhSpecialAccepted = await MHMenuSpecial.find({ status: "Accepted" });
+      acceptedSuggestions.push(...mhSpecialAccepted);
+      
+      // Fetch from LH Veg
+      const lhVegAccepted = await LHMenuVeg.find({ status: "Accepted" });
+      acceptedSuggestions.push(...lhVegAccepted);
+      
+      // Fetch from LH Non Veg
+      const lhNonVegAccepted = await LHMenuNonVeg.find({ status: "Accepted" });
+      acceptedSuggestions.push(...lhNonVegAccepted);
+      
+      // Fetch from LH Special
+      const lhSpecialAccepted = await LHMenuSpecial.find({ status: "Accepted" });
+      acceptedSuggestions.push(...lhSpecialAccepted);
 
-      const loggedInAdmin = req.user; // Ensure req.user contains the admin object
+      // Fetch all suggestions for display in accordions
+      const results = await MHMenuVeg.find({});
+      const results1 = await MHMenuNonVeg.find({});
+      const results2 = await MHMenuSpecial.find({});
+      const results3 = await LHMenuVeg.find({});
+      const results4 = await LHMenuNonVeg.find({});
+      const results5 = await LHMenuSpecial.find({});
+
+      // Fetch current weekly menu
+      const weeklyMenu = {};
+      const menuItems = await Menu.find({});
+      menuItems.forEach(item => {
+        weeklyMenu[item.day] = {
+          breakfast: item.breakfast,
+          lunch: item.lunch,
+          snacks: item.snacks,
+          dinner: item.dinner
+        };
+      });
 
       res.render("admin/dashboard", {
-        admin: loggedInAdmin, // Pass the admin object to the template
+        admin: req.user,
         results,
         results1,
         results2,
         results3,
         results4,
         results5,
-        combinedResults: [],
+        acceptedSuggestions,
+        weeklyMenu,
         successMessage: req.flash("success"),
         errorMessage: req.flash("error"),
       });
     } catch (error) {
-      console.error("Error fetching data for admin dashboard:", error);
-      req.flash("error", "Error loading dashboard data.");
-      res.redirect("/admin/login");
+      console.error("Error fetching data:", error);
+      req.flash("error", "Error fetching data.");
+      res.redirect("/admin/dashboard");
     }
   } else {
     res.redirect("/admin/login");
   }
 });
 
+// Add route to save weekly menu
+App.post("/admin/save-menu", async (req, res) => {
+  if (req.isAuthenticated() && req.user.isAdmin) {
+    try {
+      const menuData = req.body;
+      
+      // Delete existing menu items
+      await Menu.deleteMany({});
+      
+      // Create menu items for each day
+      const menuItems = Object.keys(menuData).map(day => ({
+        day: day,
+        breakfast: menuData[day].breakfast || '',
+        lunch: menuData[day].lunch || '',
+        snacks: menuData[day].snacks || '',
+        dinner: menuData[day].dinner || ''
+      }));
+      
+      // Insert new menu items
+      await Menu.insertMany(menuItems);
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error saving menu:", error);
+      res.status(500).json({ success: false, error: "Error saving menu" });
+    }
+  } else {
+    res.status(403).json({ success: false, error: "Unauthorized" });
+  }
+});
+
 // Add a new strategy for admin authentication
 passport.use("admin-local",
   new Strategy(
-    { usernameField: "email" }, // Explicitly define email as username field
+    { usernameField: "email" },
     async function (email, password, cb) {
       try {
-        const admin = await Admin.findOne({ email }); // Find user by email
-        if (!admin || admin.password !== password) {
-          return cb(null, false, { message: "Invalid credentials" });
+        const admin = await Admin.findOne({ email });
+        if (!admin) {
+          return cb(null, false, { message: "Invalid email" });
+        }
+        if (admin.password !== password) {
+          return cb(null, false, { message: "Invalid password" });
         }
         return cb(null, admin);
       } catch (error) {
@@ -349,19 +423,48 @@ App.get("/search", async (req, res) => {
 
 App.get("/accept", async (req, res) => {
   try {
-    if (formmodel === "none") {
-      req.flash("error", "Invalid form model.");
-      return res.redirect("/dashboard");
+    const suggestionId = req.query.id;
+    const modelType = req.query.model;
+
+    if (!suggestionId || !modelType) {
+      req.flash("error", "Missing required parameters.");
+      return res.redirect("/admin/dashboard");
     }
 
-    const filter = { submitted_by: req.user.name }; // Use the submitted_by field to find the suggestion
+    // Determine which model to use based on the modelType
+    let formmodel;
+    switch (modelType) {
+      case 'mhmenuveg':
+        formmodel = MHMenuVeg;
+        break;
+      case 'mhmenunonveg':
+        formmodel = MHMenuNonVeg;
+        break;
+      case 'mhmenuspecial':
+        formmodel = MHMenuSpecial;
+        break;
+      case 'lhmenuveg':
+        formmodel = LHMenuVeg;
+        break;
+      case 'lhmenunonveg':
+        formmodel = LHMenuNonVeg;
+        break;
+      case 'lhmenuspecial':
+        formmodel = LHMenuSpecial;
+        break;
+      default:
+        req.flash("error", "Invalid model type.");
+        return res.redirect("/admin/dashboard");
+    }
+
+    const filter = { _id: suggestionId };
     const update = {
       $set: {
-        status: "Accepted", // Set the status field to "Accepted"
+        status: "Accepted",
       },
     };
 
-    const result = await formmodel.updateOne(filter, update); // Use formmodel to update the document
+    const result = await formmodel.updateOne(filter, update);
 
     if (result.modifiedCount > 0) {
       req.flash("success", "Suggestion accepted successfully!");
@@ -369,11 +472,11 @@ App.get("/accept", async (req, res) => {
       req.flash("error", "No changes were made.");
     }
 
-    res.redirect("/dashboard");
+    res.redirect("/admin/dashboard");
   } catch (error) {
     console.error("Error updating suggestion:", error);
     req.flash("error", "Error accepting the suggestion.");
-    res.redirect("/dashboard");
+    res.redirect("/admin/dashboard");
   }
 });
 
@@ -382,15 +485,21 @@ App.get("/accept", async (req, res) => {
 
 
 passport.serializeUser((user, cb) => {
-  cb(null, { id: user.id, type: user instanceof Admin ? "admin" : "user" });
+  cb(null, {
+    id: user._id,
+    isAdmin: user.isAdmin || false
+  });
 });
 
 passport.deserializeUser(async (obj, cb) => {
   try {
-    let user = obj.type === "admin" 
-      ? await Admin.findById(obj.id)
-      : await User.findById(obj.id);
-      
+    let user;
+    if (obj.isAdmin) {
+      user = await Admin.findById(obj.id);
+      if (user) user.isAdmin = true;
+    } else {
+      user = await User.findById(obj.id);
+    }
     cb(null, user);
   } catch (error) {
     cb(error);
