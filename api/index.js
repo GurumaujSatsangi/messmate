@@ -310,19 +310,16 @@ App.get("/dashboard", async (req, res) => {
 
     if (!formmodel) {
       req.flash("error", "Invalid form model.");
-      return res.redirect("/login"); // Redirect to login or an error page
+      return res.redirect("/login");
     }
 
     try {
       const filter = { submitted_by: req.user.name };
-
       const results = await formmodel.find(filter);
-      console.log(results);
 
       res.render("dashboard", {
         user: loggedInUser,
         results,
-        // Always pass an empty array if no search has been performed
         successMessage: req.flash("success"),
         errorMessage: req.flash("error"),
       });
@@ -335,11 +332,45 @@ App.get("/dashboard", async (req, res) => {
     res.redirect("/login");
   }
 });
+
 App.get("/delete", async (req, res) => {
   try {
+    // Dynamically set the formmodel based on user's hostelType and messType
+    let formmodel;
+    if (req.user.hostelType === "Mens") {
+      if (req.user.messType === "Veg") {
+        formmodel = MHMenuVeg;
+      } else if (req.user.messType === "NonVeg") {
+        formmodel = MHMenuNonVeg;
+      } else if (req.user.messType === "Special") {
+        formmodel = MHMenuSpecial;
+      }
+    } else if (req.user.hostelType === "Ladies") {
+      if (req.user.messType === "Veg") {
+        formmodel = LHMenuVeg;
+      } else if (req.user.messType === "NonVeg") {
+        formmodel = LHMenuNonVeg;
+      } else if (req.user.messType === "Special") {
+        formmodel = LHMenuSpecial;
+      }
+    }
+
+    // If formmodel is not set, throw an error
+    if (!formmodel) {
+      req.flash("error", "Invalid form model.");
+      return res.redirect("/dashboard");
+    }
+
+    // Delete the suggestion based on the submitted_by field
     const filter = { submitted_by: req.user.name };
-    await formmodel.deleteOne(filter);
-    req.flash("success", "Suggestion deleted successfully!");
+    const result = await formmodel.deleteOne(filter);
+
+    if (result.deletedCount > 0) {
+      req.flash("success", "Suggestion deleted successfully!");
+    } else {
+      req.flash("error", "No suggestion found to delete.");
+    }
+
     res.redirect("/dashboard");
   } catch (error) {
     console.error("Error deleting suggestion:", error);
@@ -347,17 +378,41 @@ App.get("/delete", async (req, res) => {
     res.redirect("/dashboard");
   }
 });
+
+
 App.post("/suggestion", async (req, res) => {
   try {
-    if (formmodel === "none") {
+    // Dynamically set the formmodel based on user's hostelType and messType
+    let formmodel;
+    if (req.user.hostelType === "Mens") {
+      if (req.user.messType === "Veg") {
+        formmodel = MHMenuVeg;
+      } else if (req.user.messType === "NonVeg") {
+        formmodel = MHMenuNonVeg;
+      } else if (req.user.messType === "Special") {
+        formmodel = MHMenuSpecial;
+      }
+    } else if (req.user.hostelType === "Ladies") {
+      if (req.user.messType === "Veg") {
+        formmodel = LHMenuVeg;
+      } else if (req.user.messType === "NonVeg") {
+        formmodel = LHMenuNonVeg;
+      } else if (req.user.messType === "Special") {
+        formmodel = LHMenuSpecial;
+      }
+    }
+
+    // If formmodel is not set, throw an error
+    if (!formmodel) {
       throw new Error("Invalid form model");
     }
 
+    // Create a new suggestion document
     const newSuggestion = new formmodel({
       submitted_by: req.user.name,
-      hostel_type: req.user.hosteltype,
+      hostel_type: req.user.hostelType,
       block: req.user.hostel,
-      mess_type: req.user.messtype,
+      mess_type: req.user.messType,
       mess: req.user.mess,
       breakfast: req.body.breakfast,
       lunch: req.body.lunch,
@@ -365,11 +420,13 @@ App.post("/suggestion", async (req, res) => {
       dinner: req.body.dinner,
     });
 
+    // Save the suggestion to the database
     await newSuggestion.save();
 
-    req.flash("success", "Suggestion saved succesfully!");
-    res.redirect("/dashboard"); // Redirect to the dashboard after submission
+    req.flash("success", "Suggestion saved successfully!");
+    res.redirect("/dashboard");
   } catch (error) {
+    console.error("Error saving suggestion:", error);
     req.flash("error", "Error saving suggestion: " + error.message);
     res.redirect("/dashboard");
   }
